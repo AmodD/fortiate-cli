@@ -4,7 +4,6 @@
 const { program } = require('commander');
 program.version('0.1.0');
 
-
 program
 //  .command('deployer', 'start the fortiate deployer interface').alias('d')
   .option('-d, --debug', 'output extra debugging');
