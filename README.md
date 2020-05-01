@@ -10,8 +10,8 @@
 + This is the command line iterface of fortiate for fortiate
 > Fortiate CLI can be accessed via following techniques
 - [x] **Terminal** (standalone terminal application)
-- [] **API** (Application Program Interface)
-- [] **Event** (Pub-Sub Model)
+- [ ] **API** (Application Program Interface)
+- [ ] **Event** (Pub-Sub Model)
 
 <a name="prerequiste"/> 
 
@@ -41,7 +41,7 @@ note : Fortiate's HOME is the place where build and deploy reside
 
 > directly from git repo
 ```
-npm install git+ssh://git@github.com/fortiate/fortiate-cli.git
+npm install -g git+ssh://git@github.com/fortiate/fortiate-cli.git
 ```
 
 
