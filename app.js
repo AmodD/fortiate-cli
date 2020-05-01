@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 const { program } = require('commander');
 program.version('0.1.0');
@@ -6,7 +7,7 @@ program.version('0.1.0');
 
 program
 //  .command('deployer', 'start the fortiate deployer interface').alias('d')
-    .option('-d, --debug', 'output extra debugging')
+  .option('-d, --debug', 'output extra debugging');
 //  .option('-s, --small', 'small pizza size')
 //  .option('-p, --pizza-type <type>', 'flavour of pizza');
 
@@ -27,7 +28,7 @@ program
 program
   .command('logs [microservice]')
   .description('view logs of microservices')
-  .option("-a, --applog", "show the application internal logs")
+  .option('-a, --applog', 'show the application internal logs')
   .action((microservice, options) => {
     console.log('logs command called');
   }).on('--help', function() {
@@ -41,7 +42,7 @@ program
 program
   .command('client')
   .description('on-boarding of new client')
-  .option("-l, --list", "list all clients")
+  .option('-l, --list', 'list all clients')
   .action((source, destination) => {
     console.log('client command called');
   });
