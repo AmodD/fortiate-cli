@@ -9,7 +9,7 @@ module.exports = {
     .command('setup')
     .description('setting up fortiate on a host')
     .action(() => {
-      const appjspath = path + 'kafka/app.js';
+      const appjspath = path + 'setup/app.js';
       try {
         if (shell.test('-f', appjspath)) {
           spawn('node', [appjspath], {

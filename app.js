@@ -41,7 +41,7 @@ try {
     shell.exec('npm test --color always');
   }
 
-  if (!program.args.length) program.help();
+  // if (!program.args.length) program.help();
 
 } catch (err){
   console.error(err);
@@ -49,6 +49,7 @@ try {
 
 function install(value, previous) {
   try {
+
     spawn('npm', ['install', 'github:fortiate/fortiate-' + value, '-g'], {
       cwd: __dirname,
       stdio: 'inherit',
