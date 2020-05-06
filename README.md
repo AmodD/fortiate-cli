@@ -21,19 +21,6 @@
 * NodeJS **> 10.15.0**
 * NPM (node package manager) **> 6.8.0**
 
-> setting up environmental variables   
-```
-export FORTIATE_HOME=~/path/to/folder/build
-export FORTIATE_HOST=http(s)://domain
-```
-Examples:
-FORTIATE_HOME=/roots/projects
-FORTIATE_HOME=/Users/amodkulkarni/Projects/FORTIATE
-FORTIATE_HOST=https://dev.fortiate.com
-FORTIATE_HOST=http://localhost
-
-note : Fortiate's HOME is the place where build and deploy reside
-
 
 <a name="getting_the_code"/>
 
