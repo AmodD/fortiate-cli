@@ -1,6 +1,6 @@
 {
   "name": "fortiate",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "This is fortiate's command line interface tool",
   "main": "app.js",
   "bin": {
@@ -15,8 +15,6 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@octokit/auth-basic": "^1.4.3",
-    "@octokit/rest": "^17.6.0",
     "chalk": "^4.0.0",
     "clear": "^0.1.0",
     "clui": "^0.3.6",

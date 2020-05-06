@@ -1,7 +1,6 @@
 'use strict';
 module.exports = {
-  commands: function(program,shell) {
-
+  commands: function(program, shell) {
 
     program
     .command('git <command> [action]')
@@ -11,7 +10,6 @@ module.exports = {
       if (command === 'add') shell.exec('git add .');
       if (command === 'commit') shell.exec('git commit -m "' + action + '"');
     });
-
 
   },
 

@@ -3,11 +3,12 @@ module.exports = {
   commands: function(program) {
 
     program
-    .command('client')
+    .command('client [action]')
     .description('on-boarding of new client')
     .option('-l, --list', 'list all clients')
-    .action((source, destination) => {
-      console.log('client command called');
+    .action((action,cmdObj) => {
+      program.help()
+      console.log('client command called for action '+action);
     });
 
   },

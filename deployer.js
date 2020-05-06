@@ -1,31 +1,27 @@
 'use strict';
+var spawn = require('child_process').spawn;
+const logSymbols = require('log-symbols');
+const shell = require('shelljs');
+
 module.exports = {
-  commands: function(program, shell, logSymbols, deployerlocation) {
+  commands: function(program, deployerlocation) {
     program
     .command('deployer')
     .description('deployment of fortiate microservices')
     .action(() => {
-      this.cdToPath(shell, logSymbols, deployerlocation);
-      shell.exec('node app --color always');
-      //      if (shell.exec('node deploy --color always').code !== 0) {
-      //        shell.echo('Error: Deployer');
-      //        shell.exit(1);
-      //      }
-    });
+      try{
+       if(shell.test('-f',deployerlocation)) {
+        spawn('node', [deployerlocation], {
+          cwd: __dirname,
+          stdio: 'inherit'
+        });//eos
+       }//if check
+       else console.log(logSymbols.warning, 'Deployer does not exist!');
+      }//try
+      catch(err){
+        console.error(err); 
+      }
+    });//eoa
+  },//eof
 
-
-  },
-  cdToPath: function(shell, logSymbols, path) {
-
-    if (shell.cd(path).code !== 0) {
-      const msg = 'Deployer does not exist!';
-      console.log(logSymbols.warning, msg);
-      // shell.exit(1);
-      return msg;
-    }
-
-    return '';
-
-  },
-
-};
+};//eome
