@@ -1,6 +1,5 @@
 'use strict';
 var inquirer = require('inquirer');
-const logSymbols = require('log-symbols');
 var cmdify = require('cmdify');
 
 function start() {
@@ -16,13 +15,13 @@ function start() {
 
   var spawn = require('child_process').spawn;
 
-  var cmd =  spawn(cmdify('npm'), ["install", "github:fortiate/fortiate-kafka","-g"], {
+  var cmd = spawn(cmdify('npm'), ['install', 'github:fortiate/fortiate-kafka', '-g'], {
     cwd: __dirname,
-    stdio: 'inherit'
-  });//eos
+    stdio: 'inherit',
+  });// eos
 
 
-//  cmd.stdout.pipe(ui.log);
+  //  cmd.stdout.pipe(ui.log);
   cmd.on('close', () => {
     ui.updateBottomBar('Installation done!\n');
     process.exit();

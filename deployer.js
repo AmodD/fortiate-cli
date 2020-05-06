@@ -9,19 +9,19 @@ module.exports = {
     .command('deployer')
     .description('deployment of fortiate microservices')
     .action(() => {
-      try{
-       if(shell.test('-f',deployerlocation)) {
-        spawn('node', [deployerlocation], {
-          cwd: __dirname,
-          stdio: 'inherit'
-        });//eos
-       }//if check
-       else console.log(logSymbols.warning, 'Deployer does not exist!');
-      }//try
-      catch(err){
-        console.error(err); 
+      try {
+        if (shell.test('-f', deployerlocation)) {
+          spawn('node', [deployerlocation], {
+            cwd: __dirname,
+            stdio: 'inherit',
+          });// eos
+        } else {
+          console.log(logSymbols.warning, 'Deployer does not exist!');
+        }
+      } catch (err){
+        console.error(err);
       }
-    });//eoa
-  },//eof
+    });// eoa
+  }, // eof
 
-};//eome
+};// eome

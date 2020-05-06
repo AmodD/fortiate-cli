@@ -9,20 +9,20 @@ module.exports = {
     .command('kafka')
     .description('viewing kafka better')
     .action(() => {
-      const appjspath = path + "kafka/app.js"
-      try{
-       if(shell.test('-f',appjspath)) {
-        spawn('node', [appjspath,"2>app.log"], {
-          cwd: __dirname,
-          stdio: 'inherit'
-        });//eos
-       }//if check
-       else console.log(logSymbols.warning, 'fortiate-kafka does not exist!');
-      }//try
-      catch(err){
-        console.error(err); 
+      const appjspath = path + 'kafka/app.js';
+      try {
+        if (shell.test('-f', appjspath)) {
+          spawn('node', [appjspath, '2>app.log'], {
+            cwd: __dirname,
+            stdio: 'inherit',
+          });// eos
+        } else {
+          console.log(logSymbols.warning, 'fortiate-kafka does not exist!');
+        }
+      } catch (err){
+        console.error(err);
       }
-    });//eoa
-  },//eof
+    });// eoa
+  }, // eof
 
-};//eome
+};// eome
