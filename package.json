@@ -17,6 +17,7 @@
   "dependencies": {
     "chalk": "^4.0.0",
     "clear": "^0.1.0",
+    "cli-spinners": "^2.3.0",
     "clui": "^0.3.6",
     "cmdify": "0.0.4",
     "commander": "^5.1.0",
