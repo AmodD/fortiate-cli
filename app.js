@@ -7,8 +7,6 @@ const shell = require('shelljs');
 const logSymbols = require('log-symbols');
 let deployer = require('./deployer');
 let git = require('./git');
-let kafka = require('./kafka');
-let logs = require('./logs');
 let setup = require('./setup');
 let build = require('./build');
 var spawn = require('child_process').spawn;
@@ -28,9 +26,6 @@ try {
   build.commands(program);
   deployer.commands(program, deployerlocation);
   git.commands(program, shell);
-  //  installer.commands(program, shell);
-  kafka.commands(program, location);
-  logs.createcommand(program);
   setup.commands(program, location);
 
   program.parse(process.argv);
