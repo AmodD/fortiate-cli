@@ -31,6 +31,7 @@
     "log-symbols": "^4.0.0",
     "minimist": "^1.2.5",
     "node-fetch": "^2.6.0",
+    "ora": "^4.0.4",
     "prettier": "^2.0.5",
     "shelljs": "^0.8.4",
     "simple-git": "^2.1.0",

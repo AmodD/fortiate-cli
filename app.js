@@ -10,6 +10,7 @@ let git = require('./git');
 let kafka = require('./kafka');
 let logs = require('./logs');
 let setup = require('./setup');
+let build = require('./build');
 var spawn = require('child_process').spawn;
 const location = '/usr/local/lib/node_modules/fortiate-';
 const deployerlocation = '/usr/local/lib/node_modules/deployer/app.js';
@@ -24,7 +25,7 @@ try {
   .option('-i, --install [tool]', 'install fortiate-* tool', install)
   .option('-l, --logs [tool]', 'app logs of fortiate-* tool', toollogs);
 
-  //  client.commands(program);
+  build.commands(program);
   deployer.commands(program, deployerlocation);
   git.commands(program, shell);
   //  installer.commands(program, shell);
