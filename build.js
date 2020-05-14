@@ -9,7 +9,7 @@ module.exports = {
     program
     .command('build <microservice> [deployment]')
     .description('builds source code')
-    .action((microservice) => {
+    .action((microservice, deployment) => {
       if (microservice === 'all') console.log(logSymbols.info, 'Not implemented yet');
       else if (microservice === 'core') {
 
@@ -22,14 +22,13 @@ module.exports = {
         shell.exec('docker build --file python-fortiate.docker -t python-fortiate .');
         shell.exec('rm -rf fpf');
 
-      } 
-      else if (microservice !== '' && deployment !== '') {
+      } else if (microservice !== '' && deployment !== '') {
         try {
           const fdeploypath = process.env.FORTIATE_HOME + '/' + 'deploy';
-          shell.exec('docker-compose -f docker-compose.' + deployment +'.yml build '+microservice);
-        }
-        catch(err){
-          console.error(err)
+          shell.cd(fdeploypath);
+          shell.exec('docker-compose -f docker-compose.' + deployment + '.yml build ' + microservice);
+        } catch (err){
+          console.error(err);
         }
       } else console.log(logSymbols.info, 'Not implemented yet');
 
