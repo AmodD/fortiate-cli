@@ -17,10 +17,20 @@ module.exports = {
         shell.cd(process.env.FORTIATE_HOME + '/config/dockerfiles');
         shell.exec('rm -rf fpf');
         shell.exec('git clone git@github.com:fortiate/fpf.git', {silent: true});
-        shell.exec('docker rmi php-fortiate', {silent: true});
-        shell.exec('docker rmi python-fortiate', {silent: true});
-        shell.exec('docker build --file php-fortiate.docker -t php-fortiate .');
-        shell.exec('docker build --file python-fortiate.docker -t python-fortiate .');
+
+        if (typeof deployment === 'undefined'){
+        // shell.exec('docker rmi php-fortiate', {silent: true});
+        // shell.exec('docker rmi python-fortiate', {silent: true});
+          shell.exec('docker build --file php-fortiate.docker -t php-fortiate .');
+          shell.exec('docker build --file python-fortiate.docker -t python-fortiate .');
+        } else if (deployment === 'python'){
+          // shell.exec('docker rmi python-fortiate', {silent: true});
+          shell.exec('docker build --file python-fortiate.docker -t python-fortiate .');
+        } else if (deployment === 'php'){
+          // shell.exec('docker rmi php-fortiate', {silent: true});
+          shell.exec('docker build --file php-fortiate.docker -t php-fortiate .');
+        } else console.log(logSymbols.info, 'Hello future ! There aint no ' + deployment + ' core image yet.');
+
         shell.exec('rm -rf fpf');
       } else if (microservice !== '' && typeof deployment !== 'undefined') {
         try {
