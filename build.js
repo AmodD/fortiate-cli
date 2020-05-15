@@ -14,7 +14,7 @@ module.exports = {
 
       if (microservice === 'all') console.log(logSymbols.info, 'Not implemented yet');
       else if (microservice === 'core') {
-        shell.cd('/usr/local/lib/node_modules/fortiate/core');
+        shell.cd(process.env.FORTIATE_HOME + '/config/dockerfiles');
         shell.exec('rm -rf fpf');
         shell.exec('git clone git@github.com:fortiate/fpf.git', {silent: true});
         shell.exec('docker rmi php-fortiate', {silent: true});
