@@ -47,7 +47,7 @@ try {
 function installdevelop(value, previous) {
   try {
 
-    spawn('npm', ['install', 'github:fortiate/fortiate-' + value, '-g'], {
+    spawn('npm', ['install', 'github:fortiate/fortiate-' + value + '.git#develop', '-g'], {
       cwd: __dirname,
       stdio: 'inherit',
     });// eos
