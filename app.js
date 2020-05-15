@@ -21,6 +21,7 @@ try {
   .option('-t, --test', 'self test')
   .option('-u, --update [tool]', 'update fortiate-* tool', update)
   .option('-i, --install [tool]', 'install fortiate-* tool', install)
+  .option('-D, --Develop branch of [tool]', 'get develop branch fortiate-* tool', installdevelop)
   .option('-l, --logs [tool]', 'app logs of fortiate-* tool', toollogs);
 
   build.commands(program);
@@ -42,6 +43,24 @@ try {
 } catch (err){
   console.error(err);
 }
+
+function installdevelop(value, previous) {
+  try {
+
+    spawn('npm', ['install', 'github:fortiate/fortiate-' + value + '#develop', '-g'], {
+      cwd: __dirname,
+      stdio: 'inherit',
+    });// eos
+
+    // shell.exec("npm install github:fortiate/fortiate-"+ value +" -g");
+
+  } catch (err){
+    console.error(err);
+    console.log(logSymbols.error, 'Error installing fortiate-' + value);
+  }
+
+}
+
 
 function install(value, previous) {
   try {
