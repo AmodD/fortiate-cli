@@ -2,6 +2,7 @@
 
 const logSymbols = require('log-symbols');
 const shell = require('shelljs');
+let container = require('./container');
 
 module.exports = {
   commands: function(program) {
@@ -24,10 +25,7 @@ module.exports = {
       } else if (microservice !== '' && typeof deployment !== 'undefined') {
         try {
           const fdeploypath = process.env.FORTIATE_HOME + '/' + 'deploy';
-          let imagename = microservice;
-
-          if (microservice === ('preprocessor' || 'cleaner' || 'labeller' || 'separator' || 'csv_to_rupay')) imagename = 'file-processors';
-          else if (microservice === 'rupay-packer') imagename = 'parser-packer';
+          let imagename = container.get(microservice);
 
           shell.cd(fdeploypath);
           shell.exec('docker-compose -f docker-compose.' + deployment + '.yml build ' + imagename);

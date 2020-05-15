@@ -5,7 +5,7 @@ const { Command } = require('commander');
 const program = new Command();
 const shell = require('shelljs');
 const logSymbols = require('log-symbols');
-let deployer = require('./deployer');
+let deploy = require('./deploy');
 let git = require('./git');
 let setup = require('./setup');
 let build = require('./build');
@@ -24,7 +24,7 @@ try {
   .option('-l, --logs [tool]', 'app logs of fortiate-* tool', toollogs);
 
   build.commands(program);
-  deployer.commands(program, deployerlocation);
+  deploy.commands(program, deployerlocation);
   git.commands(program, shell);
   setup.commands(program, location);
 
