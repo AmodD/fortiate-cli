@@ -3,99 +3,33 @@
 
 const { Command } = require('commander');
 const program = new Command();
-const shell = require('shelljs');
-const logSymbols = require('log-symbols');
+// const logSymbols = require('log-symbols');
+let install = require('./install');
 let deploy = require('./deploy');
-let git = require('./git');
+// let git = require('./git');
 let setup = require('./setup');
 let build = require('./build');
-var spawn = require('child_process').spawn;
 const location = '/usr/local/lib/node_modules/fortiate-';
 const deployerlocation = '/usr/local/lib/node_modules/deployer/app.js';
 
 program.version('0.1.0');
 
 try {
-  program
-  .option('-d, --debug', 'output extra debugging')
-  .option('-t, --test', 'self test')
-  .option('-u, --update [tool]', 'update fortiate-* tool', update)
-  .option('-i, --install [tool]', 'install fortiate-* tool', install)
-  .option('-D, --Develop branch of [tool]', 'get develop branch fortiate-* tool', installdevelop)
-  .option('-l, --logs [tool]', 'app logs of fortiate-* tool', toollogs);
+  program;
+  // .option('-l, --logs [tool]', 'app logs of fortiate-* tool', toollogs);
 
+  install.commands(program, location);
+  setup.commands(program, location);
   build.commands(program);
   deploy.commands(program, deployerlocation);
-  git.commands(program, shell);
-  setup.commands(program, location);
+  // git.commands(program, shell);
 
   program.parse(process.argv);
-
-  if (program.debug) console.log(program.opts());
-  if (program.test){
-    console.log('test option called');
-    shell.cd('/usr/local/lib/node_modules/fortiate');
-    shell.exec('npm test --color always');
-  }
-
-  // if (!program.args.length) program.help();
 
 } catch (err){
   console.error(err);
 }
 
-function installdevelop(value, previous) {
-  try {
-
-    spawn('npm', ['install', 'github:fortiate/fortiate-' + value + '.git#develop', '-g'], {
-      cwd: __dirname,
-      stdio: 'inherit',
-    });// eos
-
-    // shell.exec("npm install github:fortiate/fortiate-"+ value +" -g");
-
-  } catch (err){
-    console.error(err);
-    console.log(logSymbols.error, 'Error installing fortiate-' + value);
-  }
-
-}
-
-
-function install(value, previous) {
-  try {
-
-    spawn('npm', ['install', 'github:fortiate/fortiate-' + value + '.git#master', '-g'], {
-      cwd: __dirname,
-      stdio: 'inherit',
-    });// eos
-
-    // shell.exec("npm install github:fortiate/fortiate-"+ value +" -g");
-
-  } catch (err){
-    console.error(err);
-    console.log(logSymbols.error, 'Error installing fortiate-' + value);
-  }
-
-}
-
-function update(value, previous) {
-  try {
-    spawn('npm', ['install', 'github:fortiate/fortiate-' + value, '-g'], {
-      cwd: __dirname,
-      stdio: 'inherit',
-    });// eos
-
-    // shell.exec("npm update github:fortiate/fortiate-"+ value +" -g");
-
-  } catch (err){
-    console.error(err);
-    console.log(logSymbols.error, 'Error installing fortiate-' + value);
-  }
-
-}
-
-function toollogs(value, previous) {
-  shell.exec('cat ' + location + value + '/app.log');
-
-}
+// function toollogs(value, previous) {
+//  shell.exec('cat ' + location + value + '/app.log');
+// }
