@@ -2,15 +2,15 @@
 
 const logSymbols = require('log-symbols');
 const shell = require('shelljs');
-let container = require('./container');
+let dockerfiles = require('./dockerfiles');
 
 module.exports = {
   commands: function(program) {
 
     program
-    .command('build <microservice> [deployment]')
+    .command('build <microservice> [tag]')
     .description('builds source code')
-    .action((microservice, deployment) => {
+    .action((microservice, tag) => {
 
       if (microservice === 'all') console.log(logSymbols.info, 'Not implemented yet');
       else if (microservice === 'core') {
@@ -18,30 +18,55 @@ module.exports = {
         shell.exec('rm -rf fpf');
         shell.exec('git clone git@github.com:fortiate/fpf.git', {silent: true});
 
-        if (typeof deployment === 'undefined'){
-        // shell.exec('docker rmi php-fortiate', {silent: true});
-        // shell.exec('docker rmi python-fortiate', {silent: true});
+        if (typeof tag === 'undefined'){
+          // shell.exec('docker rmi php-fortiate', {silent: true});
+          // shell.exec('docker rmi python-fortiate', {silent: true});
           shell.exec('docker build --file php-fortiate.docker -t php-fortiate .');
           shell.exec('docker build --file python-fortiate.docker -t python-fortiate .');
-        } else if (deployment === 'python'){
+        } else if (tag === 'python'){
           // shell.exec('docker rmi python-fortiate', {silent: true});
           shell.exec('docker build --file python-fortiate.docker -t python-fortiate .');
-        } else if (deployment === 'php'){
+        } else if (tag === 'php'){
           // shell.exec('docker rmi php-fortiate', {silent: true});
           shell.exec('docker build --file php-fortiate.docker -t php-fortiate .');
-        } else console.log(logSymbols.info, 'Hello future ! There aint no ' + deployment + ' core image yet.');
+        } else console.log(logSymbols.info, 'Hello future ! There aint no ' + tag + ' core image yet.');
 
         shell.exec('rm -rf fpf');
-      } else if (microservice !== '' && typeof deployment !== 'undefined') {
-        try {
-          const fdeploypath = process.env.FORTIATE_HOME + '/' + 'deploy';
-          let imagename = container.get(microservice);
+      } else if (microservice !== '') {
+        const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + microservice;
+        const dockerfilelist = dockerfiles.getlist(microservice);
+        let dbft = '';
+        let cd = '';
+        let tagname = 'master';
+        if (typeof tag !== 'undefined') tagname = tag;
 
-          shell.cd(fdeploypath);
-          shell.exec('docker-compose -f docker-compose.' + deployment + '.yml build ' + imagename);
-        } catch (err){
-          console.error(err);
+        if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
+          dockerfilelist.forEach(dockerfile => {
+            if (dockerfile === '') {
+              console.error('dockerfile does not exist for ' + microservice);
+              process.exit(1);
+            } else {
+
+              cd = shell.cd(fwsmspath, {silent: true});
+              if (cd.code !== 0) {
+                console.error(cd.stderr);
+                process.exit(1);
+              }
+
+              dbft = shell.exec('docker build ' + dockerfile + ' -t ' + microservice + ':' + tagname + ' .', {silent: true});
+              if (dbft.code !== 0) {
+                console.error(dbft.stderr);
+                process.exit(1);
+              }
+            }
+          });
+        } else {
+
+          console.error(microservice + ' is not dockerized!');
+          process.exit(1);
+
         }
+
       } else console.log(logSymbols.info, 'Not implemented yet');
 
     });
