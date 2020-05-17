@@ -1,7 +1,7 @@
 {
   "extends": "strongloop",
   "rules": {
-    "max-len": [2, 150, 8],
+    "max-len": [2, 200, 8],
     "indent": ["error", 2, { "MemberExpression": 0 }] 
   },
   "parserOptions": {
