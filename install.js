@@ -4,7 +4,7 @@ var spawn = require('child_process').spawn;
 const logSymbols = require('log-symbols');
 
 module.exports = {
-  commands: function(program) {
+  commands: async function(program) {
 
     program
     .command('install <tool> [branch]')
@@ -16,11 +16,12 @@ module.exports = {
 
       try {
 
-        spawn('npm', ['install', 'github:fortiate/fortiate-' + tool + branchpath, '-g'], {
+        await spawn('npm', ['install', 'github:fortiate/fortiate-' + tool + branchpath, '-g'], {
           cwd: __dirname,
           stdio: 'inherit',
         });// eos
 
+        if(tool === 'build') shell.exec('pm2 restart app');
         // shell.exec("npm install github:fortiate/fortiate-"+ value +" -g");
 
       } catch (err){
