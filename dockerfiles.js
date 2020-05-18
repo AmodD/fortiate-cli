@@ -15,7 +15,7 @@ function getlist(microservice){
   else if (microservice === 'csv-to-rupay') commandlist = ['--file Dockerfile -t csv-to-rupay'];
   else if (microservice === 'fields-dbservice') commandlist = ['--file Dockerfile -t fields-dbservice'];
   else if (microservice === 'fpf') commandlist = [''];
-  else if (microservice === 'labeller') commandlist = ['--file event.docker -t labeller-event','--file api.docker -t labeller-api'];
+  else if (microservice === 'labeller') commandlist = ['--file event.docker -t labeller-event', '--file api.docker -t labeller-api'];
   else if (microservice === 'login') commandlist = ['--file app.docker -t login', '--file web.docker -t login-web-server'];
   else if (microservice === 'laod-in-memory') commandlist = ['--file load-in-memory.docker -t load-in-memory'];
   else if (microservice === 'merchant-dbservice') commandlist = ['--file Dockerfile -t merchant-dbservice'];
@@ -31,7 +31,7 @@ function getlist(microservice){
     commandlist.push('--file rupay-packer.docker -t rupay-packer');
     commandlist.push('--file myfinity-parser.docker -t myfinity-parser');
     commandlist.push('--file myfinity-packer.docker -t myfinity-packer');
-  } else if (microservice === 'preprocessor') commandlist = ['--file event.docker -t preprocessor-event','--file api.docker -t preprocessor-api'];
+  } else if (microservice === 'preprocessor') commandlist = ['--file event.docker -t preprocessor-event', '--file api.docker -t preprocessor-api'];
   else if (microservice === 'rules-dbservice') commandlist = ['--file Dockerfile -t rules-dbservice'];
   else if (microservice === 'rupay-generator') commandlist = ['--file Dockerfile -t rupay-generator'];
   else if (microservice === 'sats') commandlist = ['--file app.docker -t sats', '--file web.docker -t sats-web-server'];
