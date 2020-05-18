@@ -6,7 +6,7 @@ const program = new Command();
 // const logSymbols = require('log-symbols');
 let install = require('./install');
 let deploy = require('./deploy');
-// let git = require('./git');
+let git = require('./git');
 let setup = require('./setup');
 let build = require('./build');
 const location = '/usr/local/lib/node_modules/fortiate-';
@@ -22,7 +22,7 @@ try {
   setup.commands(program, location);
   build.commands(program);
   deploy.commands(program, deployerlocation);
-  // git.commands(program, shell);
+  git.commands(program);
 
   program.parse(process.argv);
 
