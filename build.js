@@ -53,7 +53,7 @@ module.exports = {
                 process.exit(1);
               }
 
-              dbft = shell.exec('docker build ' + dockerfile + ' -t ' + microservice + ':' + tagname + ' .', {silent: true});
+              dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
               if (dbft.code !== 0) {
                 console.error(dbft.stderr);
                 process.exit(1);
