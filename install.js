@@ -13,15 +13,7 @@ function commands(program) {
     let branchpath = '';
     if (typeof branch !== 'undefined') branchpath = '.git#' + branch;
 
-
-    let spawning = new Promise((resolve, reject) => {
-      spawn('npm', ['install', 'github:fortiate/fortiate-' + tool + branchpath, '-g'], {
-        cwd: __dirname,
-        stdio: 'inherit',
-      });// eos
-    });
-
-    await spawning;
+    await spawning(tool,branchpath);
 
     if (tool === 'build') shell.exec('pm2 restart app');
     // shell.exec("npm install github:fortiate/fortiate-"+ value +" -g");
@@ -30,5 +22,11 @@ function commands(program) {
 
 }
 
+async function spawning(tool,branchpath) {
+      spawn('npm', ['install', 'github:fortiate/fortiate-' + tool + branchpath, '-g'], {
+        cwd: __dirname,
+        stdio: 'inherit',
+      });// eos
+}
 
 module.exports.commands = commands;
