@@ -63,7 +63,7 @@ module.exports = {
         } else {
 
           console.error(microservice + ' is not dockerized!');
-          process.exit(1);
+          process.exit(0);
 
         }
 
