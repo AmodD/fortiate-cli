@@ -14,12 +14,8 @@ module.exports = {
 
       if (microservice === 'all') console.log(logSymbols.info, 'Not implemented yet');
       else if (microservice === 'core') {
-
-
         if (typeof tag === 'undefined'){
-          // shell.exec('docker rmi php-fortiate', {silent: true});
-          // shell.exec('docker rmi python-fortiate', {silent: true});
-	  shell.cd(process.env.FORTIATE_HOME + '/build/workspaces/php-fortiate');
+          shell.cd(process.env.FORTIATE_HOME + '/build/workspaces/php-fortiate');
           shell.exec('docker build --file php-fortiate.docker -t php-fortiate .');
           shell.cd(process.env.FORTIATE_HOME + '/build/workspaces/fpf');
           shell.exec('docker build --file python-fortiate.docker -t python-fortiate .');
@@ -30,8 +26,6 @@ module.exports = {
           shell.cd(process.env.FORTIATE_HOME + '/build/workspaces/php-fortiate');
           shell.exec('docker build --file php-fortiate.docker -t php-fortiate .');
         } else console.log(logSymbols.info, 'Hello future ! There aint no ' + tag + ' core image yet.');
-
-
       } else if (microservice !== '') {
         const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + microservice;
         const dockerfilelist = dockerfiles.getlist(microservice);
