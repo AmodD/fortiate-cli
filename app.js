@@ -18,7 +18,7 @@ try {
   program;
   // .option('-l, --logs [tool]', 'app logs of fortiate-* tool', toollogs);
 
-  install.commands(program, location);
+//  install.commands(program, location);
   setup.commands(program, location);
   build.commands(program);
   deploy.commands(program, deployerlocation);
