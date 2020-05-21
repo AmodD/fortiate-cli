@@ -100,6 +100,7 @@ async function mavenbuild(repo, branchname) {
   if (jp.includes(repo)) {
     console.log(logSymbols.info, 'Maven ' + repo);
     shell.exec('git checkout ' + branchname);
+    shell.exec('git pull ');
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
       console.error(mcp.stderr);
@@ -136,6 +137,7 @@ async function dockerbuild(repo, branchname) {
       } else {
 
         shell.exec('git checkout ' + branchname);
+        shell.exec('git pull ');
         const dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
