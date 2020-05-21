@@ -4,7 +4,7 @@ const logSymbols = require('log-symbols');
 const shell = require('shelljs');
 let dockerfiles = require('./dockerfiles');
 const ms = require('./microservices');
-const jp = require('./javaprojects');
+const jp = require('./javaprojects').javaprojects;
 
 module.exports = {
   commands: function(program) {
