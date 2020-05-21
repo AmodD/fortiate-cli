@@ -104,7 +104,8 @@ async function mavenbuild(microservice) {
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
       console.error(mcp.stderr);
-      process.exit(1);
+      console.log(logSymbols.error, microservice);
+      // process.exit(1);
     }
   }
 
@@ -122,13 +123,15 @@ function dockerbuild(microservice, tag) {
     dockerfilelist.forEach(dockerfile => {
       if (dockerfile === '') {
         console.error('dockerfile does not exist for ' + microservice);
-        process.exit(1);
+        console.log(logSymbols.error, microservice);
+        // process.exit(1);
       } else {
 
         const dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
-          process.exit(1);
+          console.log(logSymbols.error, microservice);
+          // process.exit(1);
         }
       }
     });
