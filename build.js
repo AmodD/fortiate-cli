@@ -3,6 +3,7 @@
 const logSymbols = require('log-symbols');
 const shell = require('shelljs');
 let dockerfiles = require('./dockerfiles');
+const ms = require('./microservices');
 
 module.exports = {
   commands: function(program) {
@@ -28,6 +29,20 @@ module.exports = {
 
 function all(microservice, tag) {
 
+  core();
+
+  const microservices = ms.listofmicroservices;
+
+  let branchname = 'master';
+  let server = process.env.FORTIATE_ENV;
+
+  if (server === 'dev' || server === 'local') branchname = 'develop';
+
+  microservices.forEach(project => {
+
+    micro(project, branchname);
+
+  });
 
 }
 
