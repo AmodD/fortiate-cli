@@ -41,7 +41,6 @@ async function all() {
 
   microservices.forEach(async(repo) => {
     await micro(repo, branchname);
-
   });
 
 }
@@ -82,13 +81,13 @@ async function core(tag) {
 
 async function micro(repo, branchname) {
 
-  await mavenbuild(repo);
+  await mavenbuild(repo, branchname);
 
   await dockerbuild(repo, branchname);
 
 }// eof
 
-async function mavenbuild(repo) {
+async function mavenbuild(repo, branchname) {
 
   const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
 
@@ -101,6 +100,7 @@ async function mavenbuild(repo) {
 
   if (jp.includes(repo)) {
     console.log(logSymbols.info, 'Maven ' + repo);
+    shell.exec('git checkout ' + branchname);
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
       console.error(mcp.stderr);
@@ -136,6 +136,7 @@ async function dockerbuild(repo, branchname) {
         // process.exit(1);
       } else {
 
+        shell.exec('git checkout ' + branchname);
         const dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
@@ -149,6 +150,5 @@ async function dockerbuild(repo, branchname) {
     console.log(logSymbols.error, repo);
     // process.exit(0);
   }
-
 
 }
