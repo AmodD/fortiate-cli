@@ -14,7 +14,7 @@ module.exports = {
     .description('builds source code')
     .action((microservice, tag) => {
 
-      if (microservice === 'all') all(microservice, tag);
+      if (microservice === 'all') all();
 
       else if (microservice === 'core') core(tag);
 
@@ -28,7 +28,7 @@ module.exports = {
 
 };
 
-async function all(microservice, tag) {
+async function all() {
 
   await core();
 
@@ -39,10 +39,10 @@ async function all(microservice, tag) {
 
   if (server === 'dev' || server === 'local') branchname = 'develop';
 
-  microservices.forEach(project => {
+  microservices.forEach(async(repo) => {
 
-    console.log(logSymbols.info, 'Attempting to build ' + project);
-    micro(project, branchname);
+    console.log(logSymbols.info, 'Attempting to build ' + repo);
+    await micro(repo, branchname);
 
   });
 
@@ -82,29 +82,30 @@ async function core(tag) {
 } // eof
 
 
-async function micro(microservice, tag) {
-  const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + microservice;
+async function micro(repo, branchname) {
+  const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
 
   const cd = shell.cd(fwsmspath, {silent: true});
   if (cd.code !== 0) {
     console.error(cd.stderr);
-    process.exit(1);
+    console.log(logSymbols.error, repo);
+    // process.exit(1);
   }
 
-  await mavenbuild(microservice);
+  await mavenbuild(repo);
 
-  dockerbuild(microservice, tag);
+  await dockerbuild(repo, branchname);
 
 }// eof
 
-async function mavenbuild(microservice) {
+async function mavenbuild(repo) {
 
-  if (jp.includes(microservice)) {
-    console.log(logSymbols.info, 'Maven ' + microservice);
+  if (jp.includes(repo)) {
+    console.log(logSymbols.info, 'Maven ' + repo);
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
       console.error(mcp.stderr);
-      console.log(logSymbols.error, microservice);
+      console.log(logSymbols.error, repo);
       // process.exit(1);
     }
   }
@@ -112,32 +113,33 @@ async function mavenbuild(microservice) {
 }
 
 
-function dockerbuild(microservice, tag) {
-  const dockerfilelist = dockerfiles.getlist(microservice);
+async function dockerbuild(repo, branchname) {
+  const dockerfilelist = dockerfiles.getlist(repo);
   let tagname = 'master';
 
-  console.log(logSymbols.info, 'Docker image for ' + microservice);
-  if (typeof tag !== 'undefined') tagname = tag;
+  console.log(logSymbols.info, 'Docker image for ' + repo);
+  if (typeof branchname !== 'undefined') tagname = branchname;
 
   if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
     dockerfilelist.forEach(dockerfile => {
       if (dockerfile === '') {
-        console.error('dockerfile does not exist for ' + microservice);
-        console.log(logSymbols.error, microservice);
+        console.error('dockerfile does not exist for ' + repo);
+        console.log(logSymbols.error, repo);
         // process.exit(1);
       } else {
 
         const dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
-          console.log(logSymbols.error, microservice);
+          console.log(logSymbols.error, repo);
           // process.exit(1);
         }
       }
     });
   } else {
-    console.error(microservice + ' is not dockerized!');
-    process.exit(0);
+    console.error(repo + ' is not dockerized!');
+    console.log(logSymbols.error, repo);
+    // process.exit(0);
   }
 
 
