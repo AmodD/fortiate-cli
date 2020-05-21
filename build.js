@@ -27,9 +27,9 @@ module.exports = {
 
 };
 
-function all(microservice, tag) {
+async function all(microservice, tag) {
 
-  core();
+  await core();
 
   const microservices = ms.listofmicroservices;
 
@@ -46,7 +46,7 @@ function all(microservice, tag) {
 
 }
 
-function core(tag) {
+async function core(tag) {
   const wsphp = process.env.FORTIATE_HOME + '/build/workspaces/php-fortiate';
   const wspython = process.env.FORTIATE_HOME + '/build/workspaces/fpf';
   const dbphp = 'docker build --file php-fortiate.docker -t php-fortiate .';
