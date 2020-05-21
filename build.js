@@ -16,20 +16,23 @@ module.exports = {
     .description('builds source code')
     .action(async(microservice, tag, optObj) => {
 
+      let branch = 'master';
+
+      if (typeof tag !== 'undefined' && tag === 'dev') branch = 'develop';
+
       let saveflag = false;
       let pushflag = false;
 
       if (typeof optObj.save !== 'undefined' && optObj.save) saveflag = true;
       if (typeof optObj.push !== 'undefined' && optObj.push) pushflag = true;
 
-      if (microservice === 'all') await all(tag, saveflag, pushflag);
+      if (microservice === 'all') await all(tag, branch, saveflag, pushflag);
 
       else if (microservice === 'core') await core(tag);
 
-      else if (microservice !== '') await micro(microservice, tag, saveflag, pushflag);
+      else if (microservice !== '') await micro(microservice, tag, branch, saveflag, pushflag);
 
       else console.log(logSymbols.info, 'Not implemented yet');
-
 
     });
 
@@ -37,18 +40,14 @@ module.exports = {
 
 };
 
-async function all(tag, saveflag, pushflag) {
+async function all(tag, branch, saveflag, pushflag) {
 
   await core();
 
   const microservices = ms.listofmicroservices;
 
-  let branchname = 'master';
-
-  if (tag === 'dev') branchname = 'develop';
-
   microservices.forEach(async(repo) => {
-    await micro(repo, branchname, saveflag, pushflag);
+    await micro(repo, tag, branch, saveflag, pushflag);
   });
 
 }
@@ -87,15 +86,15 @@ async function core(tag) {
 } // eof
 
 
-async function micro(repo, branchname, saveflag, pushflag) {
+async function micro(repo, tag, branch, saveflag, pushflag) {
 
-  await mavenbuild(repo, branchname);
+  await mavenbuild(repo, branch);
 
-  await dockerbuild(repo, branchname, saveflag, pushflag);
+  await dockerbuild(repo, tag, branch, saveflag, pushflag);
 
 }// eof
 
-async function mavenbuild(repo, branchname) {
+async function mavenbuild(repo, branch) {
 
   const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
 
@@ -107,21 +106,22 @@ async function mavenbuild(repo, branchname) {
   }
 
   if (jp.includes(repo)) {
-    console.log(logSymbols.info, 'Maven ' + repo);
-    shell.exec('git checkout ' + branchname);
-    shell.exec('git pull ');
+
+    shell.exec('git checkout ' + branch, {silent: true});
+    shell.exec('git pull ', {silent: true});
+
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
       console.error(mcp.stderr);
       console.log(logSymbols.error, repo);
       // process.exit(1);
-    } else console.log(logSymbols.success, repo);
+    } else console.log(logSymbols.success, repo + ' maven jar');
   }
 
 }
 
 
-async function dockerbuild(repo, branchname, saveflag, pushflag) {
+async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
   const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
 
   const cd = shell.cd(fwsmspath, {silent: true});
@@ -132,10 +132,6 @@ async function dockerbuild(repo, branchname, saveflag, pushflag) {
   }
 
   const dockerfilelist = dockerfiles.getlist(repo);
-  let tagname = 'master';
-
-  console.log(logSymbols.info, 'Docker image for ' + repo);
-  if (typeof branchname !== 'undefined') tagname = branchname;
 
   if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
     dockerfilelist.forEach(async(dockerfile) => {
@@ -145,16 +141,18 @@ async function dockerbuild(repo, branchname, saveflag, pushflag) {
         // process.exit(1);
       } else {
 
-        shell.exec('git checkout ' + branchname);
-        shell.exec('git pull ');
-        const dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
+        shell.exec('git checkout ' + branch, {silent: true});
+        shell.exec('git pull ', {silent: true});
+        console.log(logSymbols.success, repo + ' code pulled');
+
+        const dbft = shell.exec('docker build ' + dockerfile + ':' + tag + ' .', {silent: true});
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
           console.log(logSymbols.error, repo);
           // process.exit(1);
         } else {
-          console.log(logSymbols.success, repo);
-          if (saveflag) await saveimage(repo, tagname);
+          console.log(logSymbols.success, repo + ' docker image ');
+          if (saveflag) await saveimage(repo, tag);
         }
       } // if else dockerfile === ''
     });
@@ -169,11 +167,11 @@ async function dockerbuild(repo, branchname, saveflag, pushflag) {
 async function saveimage(repo, tag, pushflag) {
 
   shell.cd(process.env.FORTIATE_HOME + '/build');
-  const ds = shell.exec('docker save ' + repo + ':' + tag + ' | gzip > ' + repo + '_' + tag + '.tar.gz ', {silent: false});
+  const ds = shell.exec('docker save ' + repo + ':' + tag + ' | gzip > ' + repo + '_' + tag + '.tar.gz ', {silent: true});
   if (ds.code !== 0) {
     console.error(ds.stderr);
   } else {
-    console.log(logSymbols.success, 'saved image ' + repo);
+    console.log(logSymbols.success, repo + ' image saved');
     if (pushflag) await pushimage(repo, tag);
   }
 
@@ -184,9 +182,8 @@ async function pushimage(repo, tag) {
 
   shell.cd(process.env.FORTIATE_HOME + '/build');
 
-  const scp = shell.exec('scp ' + repo + '_' + tag + '.tar.gz ' + ' root@' + tag + '.fortiate.com:/root/build');
-  console.log(scp);
+  const scp = shell.exec('scp ' + repo + '_' + tag + '.tar.gz ' + ' root@' + tag + '.fortiate.com:/root/build', {silent: true});
   if (scp.code !== 0) console.error(scp.stderr);
-  else console.log(logSymbols.success, 'pushed image ' + repo);
+  else console.log(logSymbols.success, repo + ' image pushed');
 
 }
