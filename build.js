@@ -40,8 +40,6 @@ async function all() {
   if (server === 'dev' || server === 'local') branchname = 'develop';
 
   microservices.forEach(async(repo) => {
-
-    console.log(logSymbols.info, 'Attempting to build ' + repo);
     await micro(repo, branchname);
 
   });
@@ -103,13 +101,12 @@ async function mavenbuild(repo) {
 
   if (jp.includes(repo)) {
     console.log(logSymbols.info, 'Maven ' + repo);
-    shell.exec('pwd');
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
       console.error(mcp.stderr);
       console.log(logSymbols.error, repo);
       // process.exit(1);
-    }
+    } else console.log(logSymbols.success, repo);
   }
 
 }
@@ -139,13 +136,12 @@ async function dockerbuild(repo, branchname) {
         // process.exit(1);
       } else {
 
-        shell.exec('pwd');
         const dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
           console.log(logSymbols.error, repo);
           // process.exit(1);
-        }
+        } else console.log(logSymbols.success, repo);
       }
     });
   } else {
