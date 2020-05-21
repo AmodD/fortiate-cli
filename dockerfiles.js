@@ -31,7 +31,8 @@ function getlist(microservice){
     commandlist.push('--file rupay-packer.docker -t rupay-packer');
     commandlist.push('--file myfinity-parser.docker -t myfinity-parser');
     commandlist.push('--file myfinity-packer.docker -t myfinity-packer');
-  } else if (microservice === 'preprocessor') commandlist = ['--file event.docker -t preprocessor-event', '--file api.docker -t preprocessor-api'];
+  } else if (microservice === 'php-fortiate') commandlist = ['--file php-fortiate.docker -t php-fortiate'];
+  else if (microservice === 'preprocessor') commandlist = ['--file event.docker -t preprocessor-event', '--file api.docker -t preprocessor-api'];
   else if (microservice === 'rules-dbservice') commandlist = ['--file Dockerfile -t rules-dbservice'];
   else if (microservice === 'rupay-generator') commandlist = ['--file Dockerfile -t rupay-generator'];
   else if (microservice === 'sats') commandlist = ['--file app.docker -t sats', '--file web.docker -t sats-web-server'];
@@ -39,7 +40,7 @@ function getlist(microservice){
   else if (microservice === 'tcp-interface') commandlist = ['--file Dockerfile -t tcp-interface'];
   else if (microservice === 'transaction-modeller') commandlist = ['--file Dockerfile -t transaction-modeller'];
   else if (microservice === 'transaction-predictor') commandlist = ['--file Dockerfile -t transaction-predictor'];
-  else if (microservice === 'transaction-dbservice') commandlist = [''];
+  else if (microservice === 'transactions-dbservice') commandlist = [''];
   else if (microservice === 'txn-to-image-encoder') commandlist = ['--file image-encoder.docker -t txn-to-image-encoder'];
   else if (microservice === 'velocity') commandlist = ['--file Dockerfile -t velocity'];
   else if (microservice === 'watcher') commandlist = ['--file watcher.docker -t watcher'];
