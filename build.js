@@ -41,6 +41,7 @@ async function all(microservice, tag) {
 
   microservices.forEach(project => {
 
+    console.log(logSymbols.info, 'Attempting to build ' + project);
     micro(project, branchname);
 
   });
@@ -99,6 +100,7 @@ async function micro(microservice, tag) {
 async function mavenbuild(microservice) {
 
   if (jp.includes(microservice)) {
+    console.log(logSymbols.info, 'Maven ' + microservice);
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
       console.error(mcp.stderr);
@@ -113,6 +115,7 @@ function dockerbuild(microservice, tag) {
   const dockerfilelist = dockerfiles.getlist(microservice);
   let tagname = 'master';
 
+  console.log(logSymbols.info, 'Docker image for ' + microservice);
   if (typeof tag !== 'undefined') tagname = tag;
 
   if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
