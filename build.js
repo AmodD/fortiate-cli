@@ -10,15 +10,17 @@ module.exports = {
   commands: function(program) {
 
     program
-    .command('build <microservice> [tag]')
+    .command('build <microservice> [branch]')
     .option('-s, --save', 'Save image as tar.gz')
     .option('-p, --push', 'Push image to respective deployment server')
     .description('builds source code')
-    .action(async(microservice, tag, optObj) => {
+    .action(async(microservice, branch, optObj) => {
 
-      let branch = 'master';
+      let tag = 'test';
 
-      if (typeof tag !== 'undefined' && tag === 'dev') branch = 'develop';
+      if (typeof branch === 'undefined') branch = 'master';
+
+      if (branch === 'develop') tag = 'dev';
 
       let saveflag = false;
       let pushflag = false;
