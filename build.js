@@ -4,6 +4,7 @@ const logSymbols = require('log-symbols');
 const shell = require('shelljs');
 let dockerfiles = require('./dockerfiles');
 const ms = require('./microservices');
+const jp = require('./javaprojects');
 
 module.exports = {
   commands: function(program) {
@@ -75,15 +76,43 @@ async function core(tag) {
 
   } // eo if else
 
+  console.log(logSymbols.success, 'Done building core images');
+
 } // eof
 
 
-function micro(microservice, tag) {
+async function micro(microservice, tag) {
   const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + microservice;
+
+  const cd = shell.cd(fwsmspath, {silent: true});
+  if (cd.code !== 0) {
+    console.error(cd.stderr);
+    process.exit(1);
+  }
+
+  await mavenbuild(microservice);
+
+  dockerbuild(microservice, tag);
+
+}// eof
+
+async function mavenbuild(microservice) {
+
+  if (jp.includes(microservice)) {
+    const mcp = shell.exec('./mvnw clean package', {silent: true});
+    if (mcp.code !== 0){
+      console.error(mcp.stderr);
+      process.exit(1);
+    }
+  }
+
+}
+
+
+function dockerbuild(microservice, tag) {
   const dockerfilelist = dockerfiles.getlist(microservice);
-  let dbft = '';
-  let cd = '';
   let tagname = 'master';
+
   if (typeof tag !== 'undefined') tagname = tag;
 
   if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
@@ -93,13 +122,7 @@ function micro(microservice, tag) {
         process.exit(1);
       } else {
 
-        cd = shell.cd(fwsmspath, {silent: true});
-        if (cd.code !== 0) {
-          console.error(cd.stderr);
-          process.exit(1);
-        }
-
-        dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
+        const dbft = shell.exec('docker build ' + dockerfile + ':' + tagname + ' .', {silent: true});
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
           process.exit(1);
@@ -111,6 +134,5 @@ function micro(microservice, tag) {
     process.exit(0);
   }
 
-}// eof
 
-
+}
