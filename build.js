@@ -11,16 +11,21 @@ module.exports = {
 
     program
     .command('build <microservice> [tag]')
+    .option('-s, --save', 'Save image as tar.gz')
+    .option('-p, --push', 'Push image to respective deployment server')
     .description('builds source code')
-    .action((microservice, tag) => {
+    .action(async(microservice, tag, optObj) => {
 
-      if (microservice === 'all') all(tag);
+      if (microservice === 'all') await all(tag);
 
-      else if (microservice === 'core') core(tag);
+      else if (microservice === 'core') await core(tag);
 
-      else if (microservice !== '') micro(microservice, tag);
+      else if (microservice !== '') await micro(microservice, tag);
 
       else console.log(logSymbols.info, 'Not implemented yet');
+
+      if (typeof optObj.save !== 'undefined' && optObj.save) await save(microservice, tag);
+      if (typeof optObj.push !== 'undefined' && optObj.push) await push(microservice, tag);
 
     });
 
@@ -151,5 +156,26 @@ async function dockerbuild(repo, branchname) {
     console.log(logSymbols.error, repo);
     // process.exit(0);
   }
+
+}
+
+async function save(repo, tag) {
+
+  shell.cd(process.env.FORTIATE_HOME + '/build');
+  const ds = shell.exec('docker save ' + repo + ':' + tag + ' | gzip > ' + repo + '_' + tag + '.tar.gz ', {silent: false});
+  if (ds.code !== 0) console.error(ds.stderr);
+  else console.log(logSymbols.success, 'saved image ' + repo);
+
+}
+
+
+async function push(repo, tag) {
+
+  shell.cd(process.env.FORTIATE_HOME + '/build');
+
+  const scp = shell.exec('scp ' + repo + '_' + tag + '.tar.gz ' + ' root@' + tag + '.fortiate.com:/root/build');
+  console.log(scp);
+  if (scp.code !== 0) console.error(scp.stderr);
+  else console.log(logSymbols.success, 'pushed image ' + repo);
 
 }
