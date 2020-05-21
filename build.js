@@ -14,7 +14,7 @@ module.exports = {
     .description('builds source code')
     .action((microservice, tag) => {
 
-      if (microservice === 'all') all();
+      if (microservice === 'all') all(tag);
 
       else if (microservice === 'core') core(tag);
 
@@ -28,16 +28,15 @@ module.exports = {
 
 };
 
-async function all() {
+async function all(tag) {
 
   await core();
 
   const microservices = ms.listofmicroservices;
 
   let branchname = 'master';
-  let server = process.env.FORTIATE_ENV;
 
-  if (server === 'dev' || server === 'local') branchname = 'develop';
+  if (tag === 'dev') branchname = 'develop';
 
   microservices.forEach(async(repo) => {
     await micro(repo, branchname);
