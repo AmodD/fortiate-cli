@@ -1,6 +1,6 @@
 'use strict';
 
-var spawn = require('child_process').spawn;
+// var spawn = require('child_process').spawn;
 const shell = require('shelljs');
 
 function commands(program) {
@@ -13,22 +13,33 @@ function commands(program) {
     let branchpath = '';
     if (typeof branch !== 'undefined') branchpath = '.git#' + branch;
 
+    let spawning = (tool, branchpath) => new Promise(resolve => {
+      shell.exec('npm install github:fortiate/fortiate-' + tool + branchpath + ' -g');
 
-    let spawning = new Promise((resolve, reject) => {
-      spawn('npm', ['install', 'github:fortiate/fortiate-' + tool + branchpath, '-g'], {
-        cwd: __dirname,
-        stdio: 'inherit',
-      });// eos
+      // spawn('npm', ['install', 'github:fortiate/fortiate-' + tool + branchpath, '-g'], {
+      //   cwd: __dirname,
+      //   stdio: 'inherit',
+      // });// eos
     });
 
-    await spawning;
+    const doSpawning = async(tool, branchpath) => {
+      return await spawning(tool, branchpath);
+    };
 
-    if (tool === 'build') shell.exec('pm2 restart app');
-    // shell.exec("npm install github:fortiate/fortiate-"+ value +" -g");
+    doSpawning(tool, branchpath).then((result) => {
+
+      if (tool === 'webhook'){
+        shell.exec('pm2 restart app 2> error.log');
+      }
+
+    }).catch((error) => {
+      console.log(error);
+    });
+
+    if (tool === 'webhook') shell.exec('pm2 restart app 2> error.log');
 
   });
 
 }
-
 
 module.exports.commands = commands;
