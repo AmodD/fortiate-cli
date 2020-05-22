@@ -58,7 +58,7 @@ async function core(tag) {
   const wsphp = process.env.FORTIATE_HOME + '/build/workspaces/php-fortiate';
   const wspython = process.env.FORTIATE_HOME + '/build/workspaces/fpf';
   const dbphp = 'docker build --file php-fortiate.docker -t php-fortiate .';
-  const dbpython = 'docker build --file python-fortiate.docker -t python-fortiate .';
+  const dbpython = 'docker build --file Dockerfile -t python-fortiate .';
 
   if (typeof tag === 'undefined'){
 
