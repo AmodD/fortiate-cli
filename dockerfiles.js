@@ -19,7 +19,7 @@ function getlist(microservice){
   else if (microservice === 'login') commandlist = ['--file app.docker -t login', '--file web.docker -t login-web-server'];
   else if (microservice === 'load-in-memory') commandlist = ['--file load-in-memory.docker -t load-in-memory'];
   else if (microservice === 'merchant-dbservice') commandlist = ['--file Dockerfile -t merchant-dbservice'];
-  else if (microservice === 'merchant-modeller') commandlist = ['--file model.docker -t merchant-modeller'];
+  else if (microservice === 'merchant-modeller') commandlist = ['--file Dockerfile -t merchant-modeller'];
   else if (microservice === 'merchant-forecaster') commandlist = ['--file Dockerfile -t merchant-forecaster'];
   else if (microservice === 'metl') commandlist = ['--file app.docker -t metl', '--file web.docker -t metl-web-server'];
   else if (microservice === 'modeller') commandlist = ['--file Dockerfile -t modeller'];
