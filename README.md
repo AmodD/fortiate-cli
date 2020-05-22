@@ -3,6 +3,8 @@
 + [Prerequisite](#prerequisite) 
 + [Getting the code](#getting_the_code)
 + [How To Run](#how_to_run)
++ [Troubleshooting](#troubleshooting)
+
 
 <a name="introduction"/>
 
@@ -12,6 +14,7 @@
 - [x] **Terminal** (standalone terminal application)
 - [ ] **API** (Application Program Interface)
 - [ ] **Event** (Pub-Sub Model)
+
 
 <a name="prerequiste"/> 
 
@@ -26,9 +29,17 @@
 
 ## Getting the Code
 
-> directly from git repo
+> With SSH
+You can get code of any branch
 ```
-npm install -g git+ssh://git@github.com/fortiate/fortiate-cli.git
+npm install -g git://git@github.com:fortiate/fortiate-cli.git#master
+npm install -g git://git@github.com:fortiate/fortiate-cli.git#develop
+```
+
+> With TOKEN
+You get only packaged code which contains master branch
+```
+npm install -g @fortiate/fortiate-cli
 ```
 
 
@@ -41,14 +52,14 @@ npm install -g git+ssh://git@github.com/fortiate/fortiate-cli.git
 fortiate
 ```
 
-note : you create aliases aka short cuts commands in your rc file(bashrc,zshrc) 
-```
-alias fd=fortiate deploy
-alias fl=fortiate log
-alias fk=fortiate kafka
-alias flp=fortiate log preprocessor
-alias fdc=fortiate deploy clean
-alias fduc=fortiate deploy update cleaner
-```
 
-please note : if you find an interesting alias do note it here above for others to follow suit
+<a name="troubleshooting"/>
+
+## Troubleshooting
+
+> Access denied to /usr/local/lib
+
+
+> Access denied to github
+
+

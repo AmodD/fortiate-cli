@@ -1,6 +1,6 @@
 {
-  "name": "fortiate",
-  "version": "0.2.3",
+  "name": "@fortiate/fortiate-cli",
+  "version": "0.2.0",
   "description": "This is fortiate's command line interface tool",
   "main": "app.js",
   "bin": {
@@ -10,10 +10,10 @@
     "test": "mocha",
     "pretest": "eslint --ignore-path .gitignore ."
   },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "keywords": [],
   "author": "fortiate",
   "license": "UNLICENSED",
-  "private": true,
   "dependencies": {
     "chalk": "^4.0.0",
     "clear": "^0.1.0",
