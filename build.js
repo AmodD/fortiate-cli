@@ -98,16 +98,17 @@ async function micro(repo, tag, branch, saveflag, pushflag) {
 
 async function mavenbuild(repo, branch) {
 
-  const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
-
-  const cd = shell.cd(fwsmspath, {silent: true});
-  if (cd.code !== 0) {
-    console.error(cd.stderr);
-    console.log(logSymbols.error, repo);
-    // process.exit(1);
-  }
 
   if (jp.includes(repo)) {
+
+    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
+
+    const cd = shell.cd(fwsmspath, {silent: true});
+    if (cd.code !== 0) {
+      console.error(cd.stderr);
+      console.log(logSymbols.error, repo);
+      // process.exit(1);
+    }
 
     shell.exec('git checkout ' + branch, {silent: true});
     shell.exec('git pull ', {silent: true});
@@ -161,6 +162,7 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
   } else {
     console.error(repo + ' is not dockerized!');
     console.log(logSymbols.error, repo);
+    // throw new Error("Can't build "+repo);
     // process.exit(0);
   }
 
