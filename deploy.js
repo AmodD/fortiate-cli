@@ -10,7 +10,16 @@ module.exports = {
     .command('deploy [deployment] [microservice]')
     .description('deployment of fortiate microservices')
     .action((deployment, microservice) => {
-      const appjspath = '../fortiate-deployer/app.js';
+
+      let appjspath = '../fortiate-setup/app.js';
+      const nvmdir = process.env.NVM_DIR;
+
+      if (typeof nvmdir !== 'undefined'){
+        const whichfortiate = shell.exec('which fortiate', {silent: true}).stdout;
+        const fortiatepath = shell.exec('readlink -f ' + whichfortiate, {slient: true}).stdout;
+        appjspath = fortiatepath.slice(0, -11) + 'deployer/app.js';
+      }
+
       if (typeof microservice === 'undefined' && typeof deployment === 'undefined'){
         try {
           if (shell.test('-f', appjspath)) {

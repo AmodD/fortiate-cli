@@ -9,7 +9,16 @@ module.exports = {
     .command('setup')
     .description('setting up fortiate on a host')
     .action(() => {
-      const appjspath = '../fortiate-setup/app.js';
+
+      let appjspath = '../fortiate-setup/app.js';
+      const nvmdir = process.env.NVM_DIR;
+
+      if (typeof nvmdir !== 'undefined'){
+        const whichfortiate = shell.exec('which fortiate', {silent: true}).stdout;
+        const fortiatepath = shell.exec('readlink -f ' + whichfortiate, {slient: true}).stdout;
+        appjspath = fortiatepath.slice(0, -11) + 'setup/app.js';
+      }
+
       try {
         if (shell.test('-f', appjspath)) {
           spawn('node', [appjspath], {
