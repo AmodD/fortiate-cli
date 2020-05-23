@@ -42,7 +42,7 @@ module.exports = {
         const containername = container.get(microservice);
 
         shell.cd(fdeploypath);
-        shell.exec('docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --build --force-recreate --no-deps ' + containername);
+        shell.exec('docker-compose -f docker-compose.'+deployment+'.yml -p '+deployment+' up --build --force-recreate --no-deps '+containername);
       } else console.log(logSymbols.info, 'Not implemented yet');
     });// eoa
   }, // eof
