@@ -22,7 +22,6 @@ function getlist(microservice){
   else if (microservice === 'merchant-modeller') commandlist = ['--file Dockerfile -t merchant-modeller'];
   else if (microservice === 'merchant-forecaster') commandlist = ['--file Dockerfile -t merchant-forecaster'];
   else if (microservice === 'metl') commandlist = ['--file app.docker -t metl', '--file web.docker -t metl-web-server'];
-  else if (microservice === 'modeller') commandlist = ['--file Dockerfile -t modeller'];
   else if (microservice === 'modelling-dbservice') commandlist = ['--file Dockerfile -t modelling-dbservice'];
   else if (microservice === 'myfinity-generator') commandlist = ['--file Dockerfile -t myfinity-generator'];
   else if (microservice === 'notifier') commandlist = ['--file Dockerfile -t notifier'];
