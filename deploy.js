@@ -33,16 +33,34 @@ module.exports = {
         } catch (err){
           console.error(err);
         }
+      
       } else if (typeof microservice === 'undefined' && deployment !== ''){
         const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
         shell.cd(fdeploypath);
-        shell.exec('docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --build --force-recreate --no-deps');
+   
+        const cmd = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --build --force-recreate --no-deps';
+        const dcua = shell.exec(cmd,{silent:true});
+
+        if (dcua.code !== 0) {
+          console.error(dcua.stderr);
+          console.log(logSymbols.error, deployment);
+          process.exit(1);
+        }
+
       } else if (microservice !== '' && deployment !== ''){
         const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
         const containername = container.get(microservice);
 
         shell.cd(fdeploypath);
-        shell.exec('docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --build --force-recreate --no-deps ' + containername);
+        const cmd = 'docker-compose -f docker-compose.'+deployment+'.yml -p '+deployment+' up --build --force-recreate --no-deps '+containername;
+        dcum = shell.exec(cmd,{silent : true});
+
+        if (dcum.code !== 0) {
+          console.error(dcum.stderr);
+          console.log(logSymbols.error, containername);
+          process.exit(1);
+        }
+
       } else console.log(logSymbols.info, 'Not implemented yet');
     });// eoa
   }, // eof
