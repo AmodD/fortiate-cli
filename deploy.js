@@ -42,11 +42,10 @@ module.exports = {
 
         if (dcua.code !== 0) {
           console.error(dcua.stderr);
-          console.log(logSymbols.error, deployment + " deployment failed");
+          console.log(logSymbols.error, deployment + ' deployment failed');
           process.exit(1);
-        }
-        else {
-          console.log(logSymbols.success, deployment + " deployed");
+        } else {
+          console.log(logSymbols.success, deployment + ' deployed');
           process.exit(0);
         }
 
@@ -61,11 +60,10 @@ module.exports = {
 
         if (dcum.code !== 0) {
           console.error(dcum.stderr);
-          console.log(logSymbols.error, container + " deployment failed");
+          console.log(logSymbols.error, container + ' deployment failed');
           process.exit(1);
-        }
-        else {
-          console.log(logSymbols.success, container + " deployed");
+        } else {
+          console.log(logSymbols.success, container + ' deployed');
           process.exit(0);
         }
 
