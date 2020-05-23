@@ -16,11 +16,11 @@ module.exports = {
     .description('builds source code')
     .action(async(microservice, branch, optObj) => {
 
-      let tag = 'test';
+      let tag = 'dev';
 
-      if (typeof branch === 'undefined') branch = 'master';
+      if (typeof branch === 'undefined') branch = 'develop';
 
-      if (branch === 'develop') tag = 'dev';
+      if (branch !== 'develop') tag = 'test';
 
       let saveflag = false;
       let pushflag = false;
@@ -29,8 +29,6 @@ module.exports = {
       if (typeof optObj.push !== 'undefined' && optObj.push) pushflag = true;
 
       if (microservice === 'all') await all(tag, branch, saveflag, pushflag);
-
-      else if (microservice === 'core') await core(tag);
 
       else if (microservice !== '') await micro(microservice, tag, branch, saveflag, pushflag);
 
@@ -44,8 +42,6 @@ module.exports = {
 
 async function all(tag, branch, saveflag, pushflag) {
 
-  await core();
-
   const microservices = ms.listofmicroservices;
 
   microservices.forEach(async(repo) => {
@@ -53,39 +49,6 @@ async function all(tag, branch, saveflag, pushflag) {
   });
 
 }
-
-async function core(tag) {
-  const wsphp = process.env.FORTIATE_HOME + '/build/workspaces/php-fortiate';
-  const wspython = process.env.FORTIATE_HOME + '/build/workspaces/fpf';
-  const dbphp = 'docker build --file php-fortiate.docker -t php-fortiate .';
-  const dbpython = 'docker build --file Dockerfile -t python-fortiate .';
-
-  if (typeof tag === 'undefined'){
-
-    shell.cd(wsphp);
-    shell.exec(dbphp);
-    shell.cd(wspython);
-    shell.exec(dbpython);
-
-  } else if (tag === 'python'){
-
-    shell.cd(wspython);
-    shell.exec(dbpython);
-
-  } else if (tag === 'php'){
-
-    shell.cd(wsphp);
-    shell.exec(dbphp);
-
-  } else {
-
-    console.log(logSymbols.info, 'Hello future ! There aint no ' + tag + ' core image yet.');
-
-  } // eo if else
-
-  console.log(logSymbols.success, 'Done building core images');
-
-} // eof
 
 
 async function micro(repo, tag, branch, saveflag, pushflag) {
@@ -147,6 +110,8 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
         shell.exec('git checkout ' + branch, {silent: true});
         shell.exec('git pull ', {silent: true});
         console.log(logSymbols.success, repo + ' code pulled');
+
+        if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
 
         const dbft = shell.exec('docker build ' + dockerfile + ':' + tag + ' .', {silent: true});
         if (dbft.code !== 0) {
