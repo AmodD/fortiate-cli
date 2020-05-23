@@ -119,6 +119,7 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
           console.log(logSymbols.error, repo);
           // process.exit(1);
         } else {
+	  shell.exec('docker images | grep none | awk "{ print $3; }" | xargs docker rmi'); 
           console.log(logSymbols.success, repo + ' docker image ');
           if (saveflag) await saveimage(repo, tag);
         }
