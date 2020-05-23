@@ -33,13 +33,13 @@ module.exports = {
         } catch (err){
           console.error(err);
         }
-      
+
       } else if (typeof microservice === 'undefined' && deployment !== ''){
         const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
         shell.cd(fdeploypath);
-   
+
         const cmd = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --build --force-recreate --no-deps';
-        const dcua = shell.exec(cmd,{silent:true});
+        const dcua = shell.exec(cmd, {silent: true});
 
         if (dcua.code !== 0) {
           console.error(dcua.stderr);
@@ -52,8 +52,10 @@ module.exports = {
         const containername = container.get(microservice);
 
         shell.cd(fdeploypath);
-        const cmd = 'docker-compose -f docker-compose.'+deployment+'.yml -p '+deployment+' up --build --force-recreate --no-deps '+containername;
-        dcum = shell.exec(cmd,{silent : true});
+        const cmd1 = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment;
+        const cmd2 = 'up --build --force-recreate --no-deps ' + containername;
+        const cmd = cmd1 + cmd2;
+        const dcum = shell.exec(cmd, {silent: true});
 
         if (dcum.code !== 0) {
           console.error(dcum.stderr);
