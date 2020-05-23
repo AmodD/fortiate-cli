@@ -10,7 +10,9 @@
     "test": "mocha",
     "pretest": "eslint --ignore-path .gitignore ."
   },
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "keywords": [],
   "author": "fortiate",
   "license": "UNLICENSED",

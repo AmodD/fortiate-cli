@@ -14,7 +14,7 @@ function getlist(microservice){
   else if (microservice === 'cleaner') commandlist = ['--file Dockerfile -t cleaner'];
   else if (microservice === 'csv-to-rupay') commandlist = ['--file Dockerfile -t csv-to-rupay'];
   else if (microservice === 'fields-dbservice') commandlist = ['--file Dockerfile -t fields-dbservice'];
-  else if (microservice === 'fpf') commandlist = ['--file Dockerfile -t python-fortiate'];
+  else if (microservice === 'fpf') commandlist = ['--file Dockerfile -t python-fortiate-fpf'];
   else if (microservice === 'labeller') commandlist = ['--file event.docker -t labeller-event', '--file api.docker -t labeller-api'];
   else if (microservice === 'login') commandlist = ['--file app.docker -t login', '--file web.docker -t login-web-server'];
   else if (microservice === 'load-in-memory') commandlist = ['--file load-in-memory.docker -t load-in-memory'];
@@ -31,6 +31,7 @@ function getlist(microservice){
     commandlist.push('--file myfinity-parser.docker -t myfinity-parser');
     commandlist.push('--file myfinity-packer.docker -t myfinity-packer');
   } else if (microservice === 'php-fortiate') commandlist = ['--file php-fortiate.docker -t php-fortiate'];
+  else if (microservice === 'python-fortiate') commandlist = ['--file Dockerfile -t python-fortiate'];
   else if (microservice === 'preprocessor') commandlist = ['--file event.docker -t preprocessor-event', '--file api.docker -t preprocessor-api'];
   else if (microservice === 'rules-dbservice') commandlist = ['--file Dockerfile -t rules-dbservice'];
   else if (microservice === 'rule-engine') commandlist = ['--file Dockerfile -t rule-engine'];
