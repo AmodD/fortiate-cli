@@ -53,7 +53,7 @@ module.exports = {
 
         shell.cd(fdeploypath);
         const cmd1 = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment;
-        const cmd2 = 'up --build --force-recreate --no-deps ' + containername;
+        const cmd2 = ' up --build --force-recreate --no-deps ' + containername;
         const cmd = cmd1 + cmd2;
         const dcum = shell.exec(cmd);
 
