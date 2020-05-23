@@ -36,7 +36,7 @@ function commands(program) {
       console.log(error);
     });
 
-    if (tool === 'webhook') shell.exec('pm2 restart app 2> error.log');
+    if (tool === 'webhook') shell.exec('pm2 restart app');
 
   });
 
