@@ -30,6 +30,7 @@ listofmicroservices.push('myfinity-generator');
 listofmicroservices.push('notifier');
 listofmicroservices.push('parser-packer');
 listofmicroservices.push('php-fortiate');
+listofmicroservices.push('python-fortiate');
 listofmicroservices.push('preprocessor');
 listofmicroservices.push('rule-engine');
 listofmicroservices.push('rules-dbservice');
