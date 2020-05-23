@@ -36,13 +36,13 @@ module.exports = {
       } else if (typeof microservice === 'undefined' && deployment !== ''){
         const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
         shell.cd(fdeploypath);
-        shell.exec('docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --force-recreate --no-deps');
+        shell.exec('docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --build --force-recreate --no-deps');
       } else if (microservice !== '' && deployment !== ''){
         const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
         const containername = container.get(microservice);
 
         shell.cd(fdeploypath);
-        shell.exec('docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --force-recreate --no-deps ' + containername);
+        shell.exec('docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' up --build --force-recreate --no-deps ' + containername);
       } else console.log(logSymbols.info, 'Not implemented yet');
     });// eoa
   }, // eof
