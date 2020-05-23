@@ -26,7 +26,6 @@ listofmicroservices.push('merchant-dbservice');
 listofmicroservices.push('merchant-modeller');
 listofmicroservices.push('merchant-forecaster');
 listofmicroservices.push('metl');
-listofmicroservices.push('modeller');
 listofmicroservices.push('modelling-dbservice');
 listofmicroservices.push('myfinity-generator');
 listofmicroservices.push('notifier');
