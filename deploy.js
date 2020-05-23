@@ -2,14 +2,13 @@
 var spawn = require('child_process').spawn;
 const logSymbols = require('log-symbols');
 const shell = require('shelljs');
-let container = require('./container');
 
 module.exports = {
   commands: function(program) {
     program
-    .command('deploy [deployment] [microservice]')
-    .description('deployment of fortiate microservices')
-    .action((deployment, microservice) => {
+    .command('deploy [deployment] [container]')
+    .description('deployment of fortiate containers')
+    .action((deployment, container) => {
 
       let appjspath = '../fortiate-setup/app.js';
       const nvmdir = process.env.NVM_DIR;
@@ -20,7 +19,7 @@ module.exports = {
         appjspath = fortiatepath.slice(0, -11) + 'deployer/app.js';
       }
 
-      if (typeof microservice === 'undefined' && typeof deployment === 'undefined'){
+      if (typeof container === 'undefined' && typeof deployment === 'undefined'){
         try {
           if (shell.test('-f', appjspath)) {
             spawn('node', [appjspath], {
@@ -34,7 +33,7 @@ module.exports = {
           console.error(err);
         }
 
-      } else if (typeof microservice === 'undefined' && deployment !== ''){
+      } else if (typeof container === 'undefined' && deployment !== ''){
         const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
         shell.cd(fdeploypath);
 
@@ -47,19 +46,18 @@ module.exports = {
           process.exit(1);
         }
 
-      } else if (microservice !== '' && deployment !== ''){
+      } else if (container !== '' && deployment !== ''){
         const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
-        const containername = container.get(microservice);
 
         shell.cd(fdeploypath);
         const cmd1 = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment;
-        const cmd2 = ' up --build --force-recreate --no-deps ' + containername;
+        const cmd2 = ' up --build --force-recreate --no-deps ' + container;
         const cmd = cmd1 + cmd2;
         const dcum = shell.exec(cmd);
 
         if (dcum.code !== 0) {
           console.error(dcum.stderr);
-          console.log(logSymbols.error, containername);
+          console.log(logSymbols.error, container);
           process.exit(1);
         }
 
