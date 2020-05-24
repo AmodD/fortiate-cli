@@ -9,6 +9,7 @@ let deploy = require('./deploy');
 let git = require('./git');
 let setup = require('./setup');
 let build = require('./build');
+let logs = require('./logs');
 
 program.version('0.1.0');
 
@@ -20,6 +21,7 @@ try {
   setup.commands(program);
   build.commands(program);
   deploy.commands(program);
+  logs.commands(program);
   git.commands(program);
 
   program.parse(process.argv);
