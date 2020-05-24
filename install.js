@@ -28,15 +28,15 @@ function commands(program) {
 
     doSpawning(tool, branchpath).then((result) => {
 
-      if (tool === 'build'){
-        shell.exec('pm2 restart app');
+      if (tool === 'webhook'){
+        shell.exec('pm2 restart app 2> error.log');
       }
 
     }).catch((error) => {
       console.log(error);
     });
 
-    if (tool === 'build') shell.exec('pm2 restart app');
+    if (tool === 'webhook') shell.exec('pm2 restart app');
 
   });
 

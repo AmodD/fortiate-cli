@@ -6,6 +6,9 @@
 
 const listofmicroservices = [];
 
+listofmicroservices.push('php-fortiate');
+listofmicroservices.push('python-fortiate');
+listofmicroservices.push('fpf');
 listofmicroservices.push('aim');
 listofmicroservices.push('alarm');
 listofmicroservices.push('allocation-engine');
@@ -16,7 +19,6 @@ listofmicroservices.push('chp-dbservice');
 listofmicroservices.push('cleaner');
 listofmicroservices.push('csv-to-rupay');
 listofmicroservices.push('fields-dbservice');
-listofmicroservices.push('fpf');
 listofmicroservices.push('labeller');
 listofmicroservices.push('login');
 listofmicroservices.push('load-in-memory');
@@ -24,12 +26,10 @@ listofmicroservices.push('merchant-dbservice');
 listofmicroservices.push('merchant-modeller');
 listofmicroservices.push('merchant-forecaster');
 listofmicroservices.push('metl');
-listofmicroservices.push('modeller');
 listofmicroservices.push('modelling-dbservice');
 listofmicroservices.push('myfinity-generator');
 listofmicroservices.push('notifier');
 listofmicroservices.push('parser-packer');
-listofmicroservices.push('php-fortiate');
 listofmicroservices.push('preprocessor');
 listofmicroservices.push('rule-engine');
 listofmicroservices.push('rules-dbservice');

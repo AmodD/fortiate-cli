@@ -5,8 +5,8 @@ const shell = require('shelljs');
 module.exports = {
   commands: function(program) {
     program
-    .command('deploy <deployment> <container>') // exception fortiate deploy dev
-    .description('deployment of fortiate containers')
+    .command('logs <deployment> <container>') // exception fortiate deploy dev
+    .description('logs of deployed fortiate containers')
     .action((deployment, container) => {
 
       const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
@@ -14,18 +14,15 @@ module.exports = {
 
       let cmd = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
 
-      if (container === 'all') cmd = cmd + 'up -d';
-      else if (container === 'down') cmd = cmd + 'down';
-      else cmd = cmd + 'up -d --build --force-recreate --no-deps ' + container;
+      if (container === 'all') cmd = cmd + 'logs';
+      else cmd = cmd + 'logs ' + container;
 
       const dc = shell.exec(cmd);
 
       if (dc.code !== 0) {
-        console.error(dc.stderr);
-        console.log(logSymbols.error, deployment + ' deployment failed');
+        console.log(logSymbols.error, deployment + ' logs could not be shown');
         process.exit(1);
       } else {
-        console.log(logSymbols.success, deployment + ' deployed');
         process.exit(0);
       }
 
