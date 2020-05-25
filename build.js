@@ -70,7 +70,7 @@ async function mavenbuild(repo, branch) {
     if (cd.code !== 0) {
       console.error(cd.stderr);
       console.log(logSymbols.error, repo);
-      // process.exit(1);
+      process.exit(1);
     }
 
     shell.exec('git checkout ' + branch, {silent: true});
@@ -80,7 +80,7 @@ async function mavenbuild(repo, branch) {
     if (mcp.code !== 0){
       console.error(mcp.stderr);
       console.log(logSymbols.error, repo);
-      // process.exit(1);
+      process.exit(1);
     } else console.log(logSymbols.success, repo + ' maven jar');
   }
 
@@ -94,7 +94,7 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
   if (cd.code !== 0) {
     console.error(cd.stderr);
     console.log(logSymbols.error, repo);
-    // process.exit(1);
+    process.exit(1);
   }
 
   const dockerfilelist = dockerfiles.getlist(repo);
@@ -104,7 +104,7 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
       if (dockerfile === '') {
         console.error('dockerfile does not exist for ' + repo);
         console.log(logSymbols.error, repo);
-        // process.exit(1);
+        process.exit(1);
       } else {
 
         shell.exec('git checkout ' + branch, {silent: true});
@@ -117,11 +117,12 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
         if (dbft.code !== 0) {
           console.error(dbft.stderr);
           console.log(logSymbols.error, repo);
-          // process.exit(1);
+          process.exit(1);
         } else {
           // shell.exec('docker images | grep none | awk "{ print $3; }" | xargs docker rmi');
           console.log(logSymbols.success, repo + ' docker image ');
           if (saveflag) await saveimage(repo, tag);
+          process.exit(0);
         }
       } // if else dockerfile === ''
     });
@@ -129,7 +130,7 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
     console.error(repo + ' is not dockerized!');
     console.log(logSymbols.error, repo);
     // throw new Error("Can't build "+repo);
-    // process.exit(0);
+    process.exit(1);
   }
 
 }
