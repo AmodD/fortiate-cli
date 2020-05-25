@@ -122,7 +122,6 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
           // shell.exec('docker images | grep none | awk "{ print $3; }" | xargs docker rmi');
           console.log(logSymbols.success, repo + ' docker image ');
           if (saveflag) await saveimage(repo, tag);
-          process.exit(0);
         }
       } // if else dockerfile === ''
     });
