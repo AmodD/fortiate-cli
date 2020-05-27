@@ -3,43 +3,43 @@ const logSymbols = require('log-symbols');
 const shell = require('shelljs');
 
 module.exports = {
-  commands: function(program) {
-    program
-    .command('deploy <deployment> <container>') // exception fortiate deploy dev
-    .description('deployment of fortiate containers')
-    .action(async(deployment, container) => {
+commands: function(program) {
+            program
+              .command('deploy <deployment> <container>') // exception fortiate deploy dev
+              .description('deployment of fortiate containers')
+              .action(async(deployment, container) => {
 
-      const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
-      shell.cd(fdeploypath);
+                  const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
+                  shell.cd(fdeploypath);
 
-      let cmdmain = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
+                  let cmdmain = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
 
-      const dc = await execdockercompose(cmdmain, container);
+                  const dc = await execdockercompose(cmdmain, container);
 
-      if (dc.code !== 0) {
-        console.error(dc.stderr);
-        console.log(logSymbols.error, deployment + ' deployment failed');
-        process.exit(1);
-      } else {
-        if (container !== 'down') console.log(logSymbols.success, deployment + ' deployed');
+                  if (dc.code !== 0) {
+                  console.error(dc.stderr);
+                  console.log(logSymbols.error, deployment + ' deployment failed');
+                  process.exit(1);
+                  } else {
+                  if (container !== 'down') console.log(logSymbols.success, deployment + ' deployed');
 
-        const ps = shell.exec(cmdmain + ' ps | grep alarm',{silent:true});
+                  const ps = shell.exec(cmdmain + ' ps | grep alarm',{silent:true});
 
-        if (container === 'alarm' || ps.stdout.includes('alarm')) await seeding(cmdmain,deployment);
+                  if (container === 'alarm' || ps.stdout.includes('alarm')) await seeding(cmdmain,deployment);
 
-        process.exit(0);
-      }
+                  process.exit(0);
+                  }
 
-    });// eoa
-  }, // eof
+              });// eoa
+          }, // eof
 
 };// eome
 
 async function seeding(cmdmain,deployment){
   const cmd = cmdmain + 'exec -T alarm php artisan migrate:refresh --seed';
   const seeding = shell.exec(cmd);
-  
-if (seeding.code !== 0){
+
+  if (seeding.code !== 0){
     console.error(seeding.stderr);
     console.log(logSymbols.error, deployment + ' seeding failed');
     process.exit(1);
