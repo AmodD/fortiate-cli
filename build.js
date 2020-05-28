@@ -13,8 +13,18 @@ module.exports = {
     .command('build <microservice> [branch]')
     .option('-s, --save', 'Save image as tar.gz')
     .option('-p, --push', 'Push image to respective deployment server')
-    .description('builds source code')
+    .description('builds docker images')
     .action(async(microservice, branch, optObj) => {
+
+      let saveflag = false;
+      let localflag = false;
+      let pushflag = false;
+
+      // we are not implementing FORTIATE_ENV dev/test logic because
+      // we may build on a build server
+      if (process.env.FORTIATE_ENV === 'local') localflag = true;
+      if (typeof optObj.save !== 'undefined' && optObj.save) saveflag = true;
+      if (typeof optObj.push !== 'undefined' && optObj.push) pushflag = true;
 
       let tag = 'dev';
 
@@ -22,15 +32,11 @@ module.exports = {
 
       if (branch !== 'develop') tag = 'test';
 
-      let saveflag = false;
-      let pushflag = false;
+      if (localflag) tag = 'local';
 
-      if (typeof optObj.save !== 'undefined' && optObj.save) saveflag = true;
-      if (typeof optObj.push !== 'undefined' && optObj.push) pushflag = true;
+      if (microservice === 'all') await all(tag, branch, localflag, saveflag, pushflag);
 
-      if (microservice === 'all') await all(tag, branch, saveflag, pushflag);
-
-      else if (microservice !== '') await micro(microservice, tag, branch, saveflag, pushflag);
+      else if (microservice !== '') await micro(microservice, tag, branch, localflag, saveflag, pushflag);
 
       else console.log(logSymbols.info, 'Not implemented yet');
 
@@ -40,26 +46,26 @@ module.exports = {
 
 };
 
-async function all(tag, branch, saveflag, pushflag) {
+async function all(tag, branch, localflag, saveflag, pushflag) {
 
   const microservices = ms.listofmicroservices;
 
   microservices.forEach(async(repo) => {
-    await micro(repo, tag, branch, saveflag, pushflag);
+    await micro(repo, tag, branch, localflag, saveflag, pushflag);
   });
 
 }
 
 
-async function micro(repo, tag, branch, saveflag, pushflag) {
+async function micro(repo, tag, branch, localflag, saveflag, pushflag) {
 
-  await mavenbuild(repo, branch);
+  await mavenbuild(repo, localflag, branch);
 
-  await dockerbuild(repo, tag, branch, saveflag, pushflag);
+  await dockerbuild(repo, tag, branch, localflag, saveflag, pushflag);
 
 }// eof
 
-async function mavenbuild(repo, branch) {
+async function mavenbuild(repo, branch, localflag) {
 
 
   if (jp.includes(repo)) {
@@ -74,7 +80,7 @@ async function mavenbuild(repo, branch) {
     }
 
     shell.exec('git checkout ' + branch, {silent: true});
-    shell.exec('git pull ', {silent: true});
+    if (!localflag) shell.exec('git pull ', {silent: true});
 
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
@@ -87,7 +93,7 @@ async function mavenbuild(repo, branch) {
 }
 
 
-async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
+async function dockerbuild(repo, tag, branch, localflag, saveflag, pushflag) {
   const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
 
   const cd = shell.cd(fwsmspath, {silent: true});
@@ -108,7 +114,7 @@ async function dockerbuild(repo, tag, branch, saveflag, pushflag) {
       } else {
 
         shell.exec('git checkout ' + branch, {silent: true});
-        shell.exec('git pull ', {silent: true});
+        if (!localflag) shell.exec('git pull ', {silent: true});
         console.log(logSymbols.success, repo + ' code pulled');
 
         if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
