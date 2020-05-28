@@ -28,7 +28,7 @@ function commands(program) {
 
     doSpawning(tool, branchpath).then((result) => {
 
-      //shell.exec('pm2 restart app');
+      //shell.exec('pm2 restart app'); //removed
 
     }).catch((error) => {
       console.log(error);
