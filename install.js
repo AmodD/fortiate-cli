@@ -24,17 +24,18 @@ function commands(program) {
 
     const doSpawning = async(tool, branchpath) => {
       return await spawning(tool, branchpath);
-    };
+    }
 
-    doSpawning(tool, branchpath).then((result) => {
+    /*doSpawning(tool, branchpath).then((result) => {
 
       shell.exec('pm2 restart app');
 
     }).catch((error) => {
+      console.log(error);*/
+    }).catch((error) => {
       console.log(error);
-    });
 
-    shell.exec('pm2 restart app');
+    //shell.exec('pm2 restart app');
 
   });
 
