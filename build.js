@@ -114,8 +114,10 @@ async function dockerbuild(repo, tag, branch, localflag, saveflag, pushflag) {
       } else {
 
         shell.exec('git checkout ' + branch, {silent: true});
-        if (!localflag) shell.exec('git pull ', {silent: true});
-        console.log(logSymbols.success, repo + ' code pulled');
+        if (!localflag) {
+          shell.exec('git pull ', {silent: true});
+          console.log(logSymbols.success, repo + ' code pulled');
+        }
 
         if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
 
