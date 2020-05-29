@@ -24,7 +24,7 @@ module.exports = {
         if (container !== 'down') console.log(logSymbols.success, deployment + ' deployed');
 
         const ps = shell.exec(cmdmain + ' ps | grep alarm', {silent: true});
-        if (container === 'alarm' || (container === 'all' && ps.stdout.includes('alarm')) ) await seeding(cmdmain, deployment);
+        if (container === 'alarm' || (container === 'all' && ps.stdout.includes('alarm'))) await seeding(cmdmain, deployment);
 
         process.exit(0);
       }
@@ -36,7 +36,7 @@ module.exports = {
 
 async function seeding(cmdmain, deployment){
 
-  console.log(logSymbols.info,'About to start alarm seeding for ' + deployment);
+  console.log(logSymbols.info, 'About to start alarm seeding for ' + deployment);
   await new Promise(r => setTimeout(r, 30000)); // 30 seconds wait for mysql sysusr db to be up and ready
 
   const cmd = cmdmain + 'exec -T alarm php artisan migrate:refresh --seed';
