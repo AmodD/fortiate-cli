@@ -9,8 +9,8 @@ module.exports = {
     .option('-a, --applog', 'Shows the app.log content')
     .description('logs of deployed fortiate containers')
     .action((deployment, container, optobj) => {
-     
-      let applogflag = false; 
+
+      let applogflag = false;
       if (typeof optobj.applog !== 'undefined' && optobj.applog) applogflag = true;
 
       const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
@@ -18,7 +18,7 @@ module.exports = {
 
       let cmd = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
 
-      if(applogflag) cmd = cmd + 'exec -T ' + container + ' cat app.log';
+      if (applogflag) cmd = cmd + 'exec -T ' + container + ' cat app.log';
       else if (container === 'all') cmd = cmd + 'logs';
       else cmd = cmd + 'logs ' + container;
 
