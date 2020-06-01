@@ -28,13 +28,13 @@ function commands(program) {
 
     doSpawning(tool, branchpath).then((result) => {
 
-      shell.exec('pm2 restart app');
+      // shell.exec('pm2 restart app');
 
     }).catch((error) => {
       console.log(error);
     });
 
-    shell.exec('pm2 restart app');
+    // shell.exec('pm2 restart app');
 
   });
 
