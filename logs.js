@@ -6,15 +6,20 @@ module.exports = {
   commands: function(program) {
     program
     .command('logs <deployment> <container>') // exception fortiate deploy dev
+    .option('-a, --applog', 'Shows the app.log content')
     .description('logs of deployed fortiate containers')
-    .action((deployment, container) => {
+    .action((deployment, container, optobj) => {
+     
+      let applogflag = false; 
+      if (typeof optobj.applog !== 'undefined' && optobj.applog) applogflag = true;
 
       const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
       shell.cd(fdeploypath);
 
       let cmd = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
 
-      if (container === 'all') cmd = cmd + 'logs';
+      if(applogflag) cmd = cmd + 'exec -T ' + container + ' cat app.log';
+      else if (container === 'all') cmd = cmd + 'logs';
       else cmd = cmd + 'logs ' + container;
 
       const dc = shell.exec(cmd);
