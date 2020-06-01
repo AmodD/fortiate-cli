@@ -21,13 +21,21 @@
 ## Prerequisite
 
 * Git  **> 2.24.1**
+* NVM (node version manager) **= 12.16.3**
 * NodeJS **> 10.15.0**
 * NPM (node package manager) **> 6.8.0**
 
+Please make sure you have first setup your local machine
+[Setting up local machine](https://fortiate.atlassian.net/l/c/EwAs7uue)
 
 <a name="getting_the_code"/>
 
 ## Getting the Code
+
+> Using NPM (Recommended)
+```
+npm install @fortiate/fortiate-cli
+```
 
 > With SSH
 You can get code of any branch
