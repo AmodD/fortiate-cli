@@ -24,6 +24,7 @@ function getlist(microservice){
   else if (microservice === 'metl') commandlist = ['--file app.docker -t metl', '--file web.docker -t metl-web-server'];
   else if (microservice === 'modelling-dbservice') commandlist = ['--file Dockerfile -t modelling-dbservice'];
   else if (microservice === 'myfinity-generator') commandlist = ['--file Dockerfile -t myfinity-generator'];
+  else if (microservice === 'nano-modeller') commandlist = ['--file Dockerfile -t nano-modeller'];
   else if (microservice === 'notifier') commandlist = ['--file Dockerfile -t notifier'];
   else if (microservice === 'parser-packer') {
     commandlist.push('--file rupay-parser.docker -t rupay-parser');
@@ -39,7 +40,6 @@ function getlist(microservice){
   else if (microservice === 'sats') commandlist = ['--file app.docker -t sats', '--file web.docker -t sats-web-server'];
   else if (microservice === 'separator') commandlist = ['--file Dockerfile -t separator'];
   else if (microservice === 'tcp-interface') commandlist = ['--file Dockerfile -t tcp-interface'];
-  else if (microservice === 'transaction-modeller') commandlist = ['--file Dockerfile -t transaction-modeller'];
   else if (microservice === 'transaction-predictor') commandlist = ['--file Dockerfile -t transaction-predictor'];
   else if (microservice === 'transactions-dbservice') commandlist = ['--file Dockerfile -t transactions-dbservice'];
   else if (microservice === 'txn-to-image-encoder') commandlist = ['--file image-encoder.docker -t txn-to-image-encoder'];
