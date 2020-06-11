@@ -82,7 +82,7 @@ async function mavenbuild(repo, branch, localflag) {
 
     const gc = shell.exec('git checkout ' + branch, {silent: true});
     if (gc.code !== 0){
-      console.error(mcp.stderr);
+      console.error(gc.stderr);
       console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
       process.exit(1);
     } else console.log(logSymbols.success, repo + ' code pulled');
@@ -122,7 +122,7 @@ async function dockerbuild(repo, tag, branch, localflag, saveflag, pushflag) {
 
         const gc = shell.exec('git checkout ' + branch, {silent: true});
         if (gc.code !== 0){
-          console.error(mcp.stderr);
+          console.error(gc.stderr);
           console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
           process.exit(1);
         } else console.log(logSymbols.success, repo + ' code pulled');
