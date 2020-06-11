@@ -67,7 +67,6 @@ async function micro(repo, tag, branch, localflag, saveflag, pushflag) {
 
 async function mavenbuild(repo, branch, localflag) {
 
-
   if (jp.includes(repo)) {
 
     const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
@@ -79,8 +78,14 @@ async function mavenbuild(repo, branch, localflag) {
       process.exit(1);
     }
 
-    shell.exec('git checkout ' + branch, {silent: true});
-    if (!localflag) shell.exec('git pull ', {silent: true});
+    shell.exec('git pull --all', {silent: true});
+
+    const gc = shell.exec('git checkout ' + branch, {silent: true});
+    if (gc.code !== 0){
+      console.error(gc.stderr);
+      console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
+      process.exit(1);
+    } else console.log(logSymbols.success, repo + ' code pulled');
 
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
@@ -113,11 +118,14 @@ async function dockerbuild(repo, tag, branch, localflag, saveflag, pushflag) {
         process.exit(1);
       } else {
 
-        shell.exec('git checkout ' + branch, {silent: true});
-        if (!localflag) {
-          shell.exec('git pull ', {silent: true});
-          console.log(logSymbols.success, repo + ' code pulled');
-        }
+        shell.exec('git pull --all', {silent: true});
+
+        const gc = shell.exec('git checkout ' + branch, {silent: true});
+        if (gc.code !== 0){
+          console.error(gc.stderr);
+          console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
+          process.exit(1);
+        } else console.log(logSymbols.success, repo + ' code pulled');
 
         if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
 

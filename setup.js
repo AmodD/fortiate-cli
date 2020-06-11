@@ -10,16 +10,16 @@ module.exports = {
     .description('setting up fortiate on a host')
     .action(() => {
 
-      let appjspath = '../fortiate-setup/app.js';
-      const nvmdir = process.env.NVM_DIR;
-
-      if (typeof nvmdir !== 'undefined'){
-        const whichfortiate = shell.exec('which fortiate', {silent: true}).stdout;
-        const fortiatepath = shell.exec('readlink -f ' + whichfortiate, {slient: true}).stdout;
-        appjspath = fortiatepath.slice(0, -11) + 'setup/app.js';
-      }
-
       try {
+
+        const nvmdir = process.env.NVM_DIR;
+        if (nvmdir === '') {
+          console.log(logSymbols.error, 'NVM DIR not set in rc file');
+          process.exit(1);
+        }
+
+        const appjspath = nvmdir + '/versions/node/v12.16.3/lib/node_modules/@fortiate/fortiate-setup/app.js';
+
         if (shell.test('-f', appjspath)) {
           spawn('node', [appjspath], {
             cwd: __dirname,
