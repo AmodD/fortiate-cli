@@ -1,6 +1,6 @@
 {
   "name": "@fortiate/fortiate-cli",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "This is fortiate's command line interface tool",
   "main": "app.js",
   "bin": {
