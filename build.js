@@ -65,7 +65,7 @@ async function micro(repo, tag, branch, localflag, saveflag, pushflag) {
 
 }// eof
 
-async function mavenbuild(repo, branch, localflag) {
+async function mavenbuild(repo, localflag, branch) {
 
   if (jp.includes(repo)) {
 
