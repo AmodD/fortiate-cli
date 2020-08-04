@@ -10,9 +10,9 @@ function getlist(microservice){
   else if (microservice === 'care') commandlist = ['--file app.docker -t care', '--file web.docker -t care-web-server'];
   else if (microservice === 'cases-dbservice') commandlist = ['--file Dockerfile -t cases-dbservice'];
   else if (microservice === 'case-engine') commandlist = ['--file Dockerfile -t case-engine'];
-  else if (microservice === 'chp-dbservice') commandlist = ['--file Dockerfile -t chp-dbservice'];
+  else if (microservice === 'consumers-dbservice') commandlist = ['--file Dockerfile -t consumers-dbservice'];
   else if (microservice === 'cleaner') commandlist = ['--file Dockerfile -t cleaner'];
-  else if (microservice === 'csv-to-rupay') commandlist = ['--file Dockerfile -t csv-to-rupay'];
+  else if (microservice === 'csv-to-parsed-data') commandlist = ['--file Dockerfile -t csv-to-parsed-data'];
   else if (microservice === 'fields-dbservice') commandlist = ['--file Dockerfile -t fields-dbservice'];
   else if (microservice === 'fpf') commandlist = ['--file Dockerfile -t python-fortiate-fpf'];
   else if (microservice === 'labeller') commandlist = ['--file event.docker -t labeller-event', '--file api.docker -t labeller-api'];
