@@ -6,7 +6,7 @@
 
 const javaprojects = [];
 
-javaprojects.push('chp-dbservice');
+javaprojects.push('consumers-dbservice');
 javaprojects.push('merchant-dbservice');
 javaprojects.push('parser-packer');
 javaprojects.push('rupay-generator');
