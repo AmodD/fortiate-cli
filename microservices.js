@@ -39,6 +39,7 @@ listofmicroservices.push('sats');
 listofmicroservices.push('separator');
 listofmicroservices.push('tcp-interface');
 listofmicroservices.push('transaction-predictor');
+listofmicroservices.push('transaction-modeller');
 listofmicroservices.push('transactions-dbservice');
 listofmicroservices.push('txn-to-image-encoder');
 listofmicroservices.push('velocity');
