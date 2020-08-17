@@ -41,6 +41,7 @@ function getlist(microservice){
   else if (microservice === 'separator') commandlist = ['--file Dockerfile -t separator'];
   else if (microservice === 'tcp-interface') commandlist = ['--file Dockerfile -t tcp-interface'];
   else if (microservice === 'transaction-predictor') commandlist = ['--file Dockerfile -t transaction-predictor'];
+  else if (microservice === 'transaction-modeller') commandlist = ['--file Dockerfile -t transaction-modeller'];
   else if (microservice === 'transactions-dbservice') commandlist = ['--file Dockerfile -t transactions-dbservice'];
   else if (microservice === 'txn-to-image-encoder') commandlist = ['--file image-encoder.docker -t txn-to-image-encoder'];
   else if (microservice === 'velocity') commandlist = ['--file Dockerfile -t velocity'];
