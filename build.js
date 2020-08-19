@@ -3,7 +3,7 @@
 const logSymbols = require('log-symbols');
 const shell = require('shelljs');
 let dockerfiles = require('./dockerfiles');
-let db = require('./databases');
+const db = require('./databases');
 const ms = require('./microservices');
 const jp = require('./javaprojects').javaprojects;
 
@@ -109,7 +109,7 @@ async function mavenbuild(repo, localflag, branch) {
 
 async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
 
-  if (db.includes(repo)) {
+  if (db.listofdatabases.includes(repo)) {
 
     const fconfig = process.env.FORTIATE_HOME + '/config';
     const fdbconfigpath = process.env.FORTIATE_HOME + '/config/databases/' + repo;
@@ -176,7 +176,7 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
 
 async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
 
-  if (ms.includes(repo)) {
+  if (ms.listofmicroservices.includes(repo)) {
 
     const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
 
