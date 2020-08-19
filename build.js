@@ -3,6 +3,7 @@
 const logSymbols = require('log-symbols');
 const shell = require('shelljs');
 let dockerfiles = require('./dockerfiles');
+let db = require('./databases');
 const ms = require('./microservices');
 const jp = require('./javaprojects').javaprojects;
 
@@ -49,6 +50,11 @@ module.exports = {
 async function all(tag, branch, localflag, saveflag, pushflag) {
 
   const microservices = ms.listofmicroservices;
+  const databases = db.listofdatabases;
+
+  databases.forEach(async(repo) => {
+    await micro(repo, tag, branch, localflag, saveflag, pushflag);
+  });
 
   microservices.forEach(async(repo) => {
     await micro(repo, tag, branch, localflag, saveflag, pushflag);
@@ -61,7 +67,9 @@ async function micro(repo, tag, branch, localflag, saveflag, pushflag) {
 
   await mavenbuild(repo, localflag, branch);
 
-  await dockerbuild(repo, tag, branch, localflag, saveflag, pushflag);
+  await dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag);
+
+  await dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag);
 
 }// eof
 
@@ -93,62 +101,135 @@ async function mavenbuild(repo, localflag, branch) {
       console.log(logSymbols.error, repo);
       process.exit(1);
     } else console.log(logSymbols.success, repo + ' maven jar');
-  }
 
-}
+  }// end of first if condition
+
+}// end of function
 
 
-async function dockerbuild(repo, tag, branch, localflag, saveflag, pushflag) {
-  const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
+async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
 
-  const cd = shell.cd(fwsmspath, {silent: true});
-  if (cd.code !== 0) {
-    console.error(cd.stderr);
-    console.log(logSymbols.error, repo);
-    process.exit(1);
-  }
+  if (db.includes(repo)) {
 
-  const dockerfilelist = dockerfiles.getlist(repo);
+    const fconfig = process.env.FORTIATE_HOME + '/config';
+    const fdbconfigpath = process.env.FORTIATE_HOME + '/config/databases/' + repo;
 
-  if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
-    dockerfilelist.forEach(async(dockerfile) => {
-      if (dockerfile === '') {
-        console.error('dockerfile does not exist for ' + repo);
-        console.log(logSymbols.error, repo);
-        process.exit(1);
-      } else {
+    const cd = shell.cd(fconfig, {silent: true});
+    if (cd.code !== 0) {
+      console.error(cd.stderr);
+      console.log(logSymbols.error, repo);
+      process.exit(1);
+    }
 
-        shell.exec('git pull --all', {silent: true});
+    shell.exec('git pull --all', {silent: true});
 
-        const gc = shell.exec('git checkout ' + branch, {silent: true});
-        if (gc.code !== 0){
-          console.error(gc.stderr);
-          console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
-          process.exit(1);
-        } else console.log(logSymbols.success, repo + ' code pulled');
+    const gc = shell.exec('git checkout ' + branch, {silent: true});
+    if (gc.code !== 0){
+      console.error(gc.stderr);
+      console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
+      process.exit(1);
+    } else console.log(logSymbols.success, 'CONFIG code pulled');
 
-        if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
+    const dockerfilelist = dockerfiles.getlist(repo);
 
-        const dbft = shell.exec('docker build ' + dockerfile + ':' + tag + ' .', {silent: true});
-        if (dbft.code !== 0) {
-          console.error(dbft.stderr);
+    if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
+      dockerfilelist.forEach(async(dockerfile) => {
+        if (dockerfile === '') {
+          console.error('dockerfile does not exist for ' + repo);
           console.log(logSymbols.error, repo);
           process.exit(1);
         } else {
-          // shell.exec('docker images | grep none | awk "{ print $3; }" | xargs docker rmi');
-          console.log(logSymbols.success, repo + ' docker image ');
-          if (saveflag) await saveimage(repo, tag);
-        }
-      } // if else dockerfile === ''
-    });
-  } else {
-    console.error(repo + ' is not dockerized!');
-    console.log(logSymbols.error, repo);
-    // throw new Error("Can't build "+repo);
-    process.exit(1);
-  }
 
-}
+          const cd = shell.cd(fdbconfigpath, {silent: true});
+          if (cd.code !== 0) {
+            console.error(cd.stderr);
+            console.log(logSymbols.error, repo);
+            process.exit(1);
+          }
+
+          tag = 'latest';
+
+          const dbft = shell.exec('docker build ' + dockerfile + ':' + tag + ' .', {silent: true});
+          if (dbft.code !== 0) {
+            console.error(dbft.stderr);
+            console.log(logSymbols.error, repo);
+            process.exit(1);
+          } else {
+            // shell.exec('docker images | grep none | awk "{ print $3; }" | xargs docker rmi');
+            console.log(logSymbols.success, repo + ' docker image ');
+            if (saveflag) await saveimage(repo, tag);
+          }
+        } // if else dockerfile === ''
+      });
+    } else {
+      console.error(repo + ' is not dockerized!');
+      console.log(logSymbols.error, repo);
+      // throw new Error("Can't build "+repo);
+      process.exit(1);
+    }
+
+
+  }// end of first if condition
+
+} // end of function
+
+
+async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
+
+  if (ms.includes(repo)) {
+
+    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
+
+    const cd = shell.cd(fwsmspath, {silent: true});
+    if (cd.code !== 0) {
+      console.error(cd.stderr);
+      console.log(logSymbols.error, repo);
+      process.exit(1);
+    }
+
+    const dockerfilelist = dockerfiles.getlist(repo);
+
+    if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
+      dockerfilelist.forEach(async(dockerfile) => {
+        if (dockerfile === '') {
+          console.error('dockerfile does not exist for ' + repo);
+          console.log(logSymbols.error, repo);
+          process.exit(1);
+        } else {
+
+          shell.exec('git pull --all', {silent: true});
+
+          const gc = shell.exec('git checkout ' + branch, {silent: true});
+          if (gc.code !== 0){
+            console.error(gc.stderr);
+            console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
+            process.exit(1);
+          } else console.log(logSymbols.success, repo + ' code pulled');
+
+          if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
+
+          const dbft = shell.exec('docker build ' + dockerfile + ':' + tag + ' .', {silent: true});
+          if (dbft.code !== 0) {
+            console.error(dbft.stderr);
+            console.log(logSymbols.error, repo);
+            process.exit(1);
+          } else {
+            // shell.exec('docker images | grep none | awk "{ print $3; }" | xargs docker rmi');
+            console.log(logSymbols.success, repo + ' docker image ');
+            if (saveflag) await saveimage(repo, tag);
+          }
+        } // if else dockerfile === ''
+      });
+    } else {
+      console.error(repo + ' is not dockerized!');
+      console.log(logSymbols.error, repo);
+      // throw new Error("Can't build "+repo);
+      process.exit(1);
+    }
+
+  }// end of first if condition
+
+}// end of function
 
 async function saveimage(repo, tag, pushflag) {
 
