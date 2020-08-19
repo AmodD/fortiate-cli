@@ -14,6 +14,6 @@ listofdatabases.push('modelsdb');
 listofdatabases.push('rulesdb');
 listofdatabases.push('satsdb');
 // listofdatabases.push('transactionsdb');
-listofdatabases.push('sysusersdb');
+listofdatabases.push('sysusrdb');
 
 module.exports.listofdatabases = listofdatabases;
