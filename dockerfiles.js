@@ -48,6 +48,7 @@ function getlist(microservice){
   else if (microservice === 'watcher') commandlist = ['--file watcher.docker -t watcher'];
   else if (microservice === 'sysusrdb') commandlist = ['--file Dockerfile -t sysusr-seeded'];
   else if (microservice === 'casesdb') commandlist = ['--file Dockerfile -t cases-seeded'];
+  else if (microservice === 'consumersdb') commandlist = ['--file Dockerfile -t consumers-seeded'];
   else if (microservice === 'compliancedb') commandlist = ['--file Dockerfile -t compliance-seeded'];
   else if (microservice === 'merchantsdb') commandlist = ['--file Dockerfile -t merchants-seeded'];
   else if (microservice === 'modelsdb') commandlist = ['--file Dockerfile -t models-seeded'];

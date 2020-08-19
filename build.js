@@ -128,7 +128,8 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
       console.error(gc.stderr);
       console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
       process.exit(1);
-    } else console.log(logSymbols.success, 'CONFIG code pulled');
+//    } else console.log(logSymbols.success, 'CONFIG code pulled');
+    }
 
     const dockerfilelist = dockerfiles.getlist(repo);
 
