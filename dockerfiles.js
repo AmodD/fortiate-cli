@@ -54,7 +54,7 @@ function getlist(microservice){
   else if (microservice === 'modelsdb') commandlist = ['--file Dockerfile -t models-seeded'];
   else if (microservice === 'rulesdb') commandlist = ['--file Dockerfile -t rules-seeded'];
   else if (microservice === 'satsdb') commandlist = ['--file Dockerfile -t sats-seeded'];
-  // else if (microservice === 'transactionsdb') commandlist = ['--file Dockerfile -t transactions-seeded'];
+  else if (microservice === 'transactionsdb') commandlist = ['--file Dockerfile -t transactions-seeded'];
 
   return commandlist;
 
