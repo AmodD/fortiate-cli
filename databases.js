@@ -13,7 +13,7 @@ listofdatabases.push('merchantsdb');
 listofdatabases.push('modelsdb');
 listofdatabases.push('rulesdb');
 listofdatabases.push('satsdb');
-// listofdatabases.push('transactionsdb');
+listofdatabases.push('transactionsdb');
 listofdatabases.push('sysusrdb');
 
 module.exports.listofdatabases = listofdatabases;
