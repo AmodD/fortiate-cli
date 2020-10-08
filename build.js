@@ -86,7 +86,7 @@ async function mavenbuild(repo, localflag, branch) {
       process.exit(1);
     }
 
-    shell.exec('git fetch --all',{silent: true});
+    shell.exec('git fetch --all', {silent: true});
     // const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
     const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
 
@@ -125,7 +125,7 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
     }
 
     // const gc = shell.exec('git checkout ' + branch, {silent: true});
-    shell.exec('git fetch --all',{silent: true});
+    shell.exec('git fetch --all', {silent: true});
     const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
 
     if (gc.code !== 0){
@@ -205,7 +205,7 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
           // shell.exec('git pull --all', {silent: true});
 
           // const gc = shell.exec('git checkout ' + branch, {silent: true});
-          shell.exec('git fetch --all',{silent: true});
+          shell.exec('git fetch --all', {silent: true});
           const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
           if (gc.code !== 0){
             console.error(gc.stderr);
