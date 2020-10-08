@@ -86,14 +86,16 @@ async function mavenbuild(repo, localflag, branch) {
       process.exit(1);
     }
 
-    shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
+    // const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
+    const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
 
-    const gc = shell.exec('git checkout ' + branch, {silent: true});
     if (gc.code !== 0){
       console.error(gc.stderr);
       console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
       process.exit(1);
     } else console.log(logSymbols.success, repo + ' code pulled');
+
+    shell.exec('cd ' + repo, {silent: true});
 
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
@@ -121,9 +123,9 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
       process.exit(1);
     }
 
-    shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
+    // const gc = shell.exec('git checkout ' + branch, {silent: true});
+    const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
 
-    const gc = shell.exec('git checkout ' + branch, {silent: true});
     if (gc.code !== 0){
       console.error(gc.stderr);
       console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
@@ -198,9 +200,10 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
           process.exit(1);
         } else {
 
-          shell.exec('git pull --all', {silent: true});
+          // shell.exec('git pull --all', {silent: true});
 
-          const gc = shell.exec('git checkout ' + branch, {silent: true});
+          // const gc = shell.exec('git checkout ' + branch, {silent: true});
+          const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
           if (gc.code !== 0){
             console.error(gc.stderr);
             console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
