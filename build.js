@@ -77,7 +77,7 @@ async function mavenbuild(repo, localflag, branch) {
 
   if (jp.includes(repo)) {
 
-    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
+    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/';
 
     const cd = shell.cd(fwsmspath, {silent: true});
     if (cd.code !== 0) {
@@ -86,10 +86,8 @@ async function mavenbuild(repo, localflag, branch) {
       process.exit(1);
     }
 
-    shell.exec('git fetch --all', {silent: true});
-    // const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
-    const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
-
+    shell.exec('rm -rf ' + repo, {silent: true});
+    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
     if (gc.code !== 0){
       console.error(gc.stderr);
       console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
@@ -115,7 +113,7 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
   if (db.listofdatabases.includes(repo)) {
 
     const fconfig = process.env.FORTIATE_HOME + '/config';
-    const fdbconfigpath = process.env.FORTIATE_HOME + '/config/databases/' + repo;
+    const fdbconfigpath = process.env.FORTIATE_HOME + '/config/databases/';
 
     const cd = shell.cd(fconfig, {silent: true});
     if (cd.code !== 0) {
@@ -124,16 +122,15 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
       process.exit(1);
     }
 
-    // const gc = shell.exec('git checkout ' + branch, {silent: true});
-    shell.exec('git fetch --all', {silent: true});
-    const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
-
+    shell.exec('rm -rf ' + repo, {silent: true});
+    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
     if (gc.code !== 0){
       console.error(gc.stderr);
       console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
       process.exit(1);
       //    } else console.log(logSymbols.success, 'CONFIG code pulled');
     }
+    shell.exec('cd ' + repo, {silent: true});
 
     const dockerfilelist = dockerfiles.getlist(repo);
 
@@ -183,7 +180,7 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
 
   if (ms.listofmicroservices.includes(repo)) {
 
-    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/' + repo;
+    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/';
 
     const cd = shell.cd(fwsmspath, {silent: true});
     if (cd.code !== 0) {
@@ -201,17 +198,15 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
           console.log(logSymbols.error, repo);
           process.exit(1);
         } else {
-
-          // shell.exec('git pull --all', {silent: true});
-
-          // const gc = shell.exec('git checkout ' + branch, {silent: true});
-          shell.exec('git fetch --all', {silent: true});
-          const gc = shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
+          shell.exec('rm -rf ' + repo, {silent: true});
+          const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
           if (gc.code !== 0){
             console.error(gc.stderr);
             console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
             process.exit(1);
           } else console.log(logSymbols.success, repo + ' code pulled');
+
+          shell.exec('cd ' + repo, {silent: true});
 
           if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
 
