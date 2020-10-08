@@ -188,6 +188,15 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
       console.log(logSymbols.error, repo);
       process.exit(1);
     }
+    shell.exec('rm -rf ' + repo, {silent: true});
+    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
+    if (gc.code !== 0){
+      console.error(gc.stderr);
+      console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
+      process.exit(1);
+    } else console.log(logSymbols.success, repo + ' code pulled');
+
+    shell.exec('cd ' + repo, {silent: true});
 
     const dockerfilelist = dockerfiles.getlist(repo);
 
@@ -198,15 +207,6 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
           console.log(logSymbols.error, repo);
           process.exit(1);
         } else {
-          shell.exec('rm -rf ' + repo, {silent: true});
-          const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
-          if (gc.code !== 0){
-            console.error(gc.stderr);
-            console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
-            process.exit(1);
-          } else console.log(logSymbols.success, repo + ' code pulled');
-
-          shell.exec('cd ' + repo, {silent: true});
 
           if (repo === 'php-fortiate' || repo === 'python-fortiate' || repo === 'fpf') tag = 'latest';
 
