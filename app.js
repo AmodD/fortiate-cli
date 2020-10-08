@@ -11,7 +11,7 @@ let setup = require('./setup');
 let build = require('./build');
 let logs = require('./logs');
 
-program.version('0.7.5');
+program.version('0.7.6');
 
 try {
   program;
