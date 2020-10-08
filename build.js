@@ -65,50 +65,14 @@ async function all(tag, branch, localflag, saveflag, pushflag) {
 
 async function micro(repo, tag, branch, localflag, saveflag, pushflag) {
 
-  await mavenbuild(repo, localflag, branch);
+  await builddb(repo, tag, branch, localflag, saveflag, pushflag);
 
-  await dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag);
-
-  await dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag);
+  await buildws(repo, tag, branch, localflag, saveflag, pushflag);
 
 }// eof
 
-async function mavenbuild(repo, localflag, branch) {
 
-  if (jp.includes(repo)) {
-
-    const fwspath = process.env.FORTIATE_HOME + '/build/workspaces/';
-
-    const cd = shell.cd(fwspath, {silent: true});
-    if (cd.code !== 0) {
-      console.error(cd.stderr);
-      console.log(logSymbols.error, repo);
-      process.exit(1);
-    }
-
-    shell.exec('rm -rf ' + repo, {silent: true});
-    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
-    if (gc.code !== 0){
-      console.error(gc.stderr);
-      console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
-      process.exit(1);
-    } else console.log(logSymbols.success, repo + ' code pulled');
-
-    shell.cd(repo, {silent: true});
-
-    const mcp = shell.exec('./mvnw clean package', {silent: true});
-    if (mcp.code !== 0){
-      console.error(mcp.stderr);
-      console.log(logSymbols.error, repo);
-      process.exit(1);
-    } else console.log(logSymbols.success, repo + ' maven jar');
-
-  }// end of first if condition
-
-}// end of function
-
-
-async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
+async function builddb(repo, tag, branch, localflag, saveflag, pushflag) {
 
   if (db.listofdatabases.includes(repo)) {
 
@@ -176,7 +140,7 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
 } // end of function
 
 
-async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
+async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
 
   if (ms.listofmicroservices.includes(repo)) {
 
@@ -198,6 +162,21 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
 
     shell.cd(repo, {silent: true});
 
+    // step 1 build maven jar , if java project
+
+    if (jp.includes(repo)) {
+
+      const mcp = shell.exec('./mvnw clean package', {silent: true});
+      if (mcp.code !== 0){
+        console.error(mcp.stderr);
+        console.log(logSymbols.error, repo);
+        process.exit(1);
+      } else console.log(logSymbols.success, repo + ' maven jar');
+
+    }
+
+
+    // step 2 build docker image
     const dockerfilelist = dockerfiles.getlist(repo);
 
     if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
