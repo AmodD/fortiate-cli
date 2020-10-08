@@ -77,9 +77,9 @@ async function mavenbuild(repo, localflag, branch) {
 
   if (jp.includes(repo)) {
 
-    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/';
+    const fwspath = process.env.FORTIATE_HOME + '/build/workspaces/';
 
-    const cd = shell.cd(fwsmspath, {silent: true});
+    const cd = shell.cd(fwspath, {silent: true});
     if (cd.code !== 0) {
       console.error(cd.stderr);
       console.log(logSymbols.error, repo);
@@ -94,7 +94,7 @@ async function mavenbuild(repo, localflag, branch) {
       process.exit(1);
     } else console.log(logSymbols.success, repo + ' code pulled');
 
-    shell.exec('cd ' + repo, {silent: true});
+    shell.cd(repo, {silent: true});
 
     const mcp = shell.exec('./mvnw clean package', {silent: true});
     if (mcp.code !== 0){
@@ -121,16 +121,16 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
       console.log(logSymbols.error, repo);
       process.exit(1);
     }
+    shell.exec('rm -rf config', {silent: true});
 
-    shell.exec('rm -rf ' + repo, {silent: true});
-    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
+    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/config.git', {silent: true});
     if (gc.code !== 0){
       console.error(gc.stderr);
       console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
       process.exit(1);
       //    } else console.log(logSymbols.success, 'CONFIG code pulled');
     }
-    shell.exec('cd ' + repo, {silent: true});
+    shell.cd('config', {silent: true});
 
     const dockerfilelist = dockerfiles.getlist(repo);
 
@@ -180,9 +180,9 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
 
   if (ms.listofmicroservices.includes(repo)) {
 
-    const fwsmspath = process.env.FORTIATE_HOME + '/build/workspaces/';
+    const fwspath = process.env.FORTIATE_HOME + '/build/workspaces/';
 
-    const cd = shell.cd(fwsmspath, {silent: true});
+    const cd = shell.cd(fwspath, {silent: true});
     if (cd.code !== 0) {
       console.error(cd.stderr);
       console.log(logSymbols.error, repo);
@@ -196,7 +196,7 @@ async function dockerbuildws(repo, tag, branch, localflag, saveflag, pushflag) {
       process.exit(1);
     } else console.log(logSymbols.success, repo + ' code pulled');
 
-    shell.exec('cd ' + repo, {silent: true});
+    shell.cd(repo, {silent: true});
 
     const dockerfilelist = dockerfiles.getlist(repo);
 
