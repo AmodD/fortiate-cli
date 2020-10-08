@@ -86,7 +86,7 @@ async function mavenbuild(repo, localflag, branch) {
       process.exit(1);
     }
 
-    shell.exec('git pull --all', {silent: true});
+    shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
 
     const gc = shell.exec('git checkout ' + branch, {silent: true});
     if (gc.code !== 0){
@@ -121,7 +121,7 @@ async function dockerbuilddb(repo, tag, branch, localflag, saveflag, pushflag) {
       process.exit(1);
     }
 
-    shell.exec('git pull --all', {silent: true});
+    shell.exec('git checkout -b ' + branch + ' origin/' + branch, {silent: true});
 
     const gc = shell.exec('git checkout ' + branch, {silent: true});
     if (gc.code !== 0){
