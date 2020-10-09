@@ -6,6 +6,7 @@ let dockerfiles = require('./dockerfiles');
 const db = require('./databases');
 const ms = require('./microservices');
 const jp = require('./javaprojects').javaprojects;
+const hp = require('./httpsprojects').httpsprojects;
 
 module.exports = {
   commands: function(program) {
@@ -175,8 +176,26 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
 
     }
 
+    // step 2 , get certificates if https project
 
-    // step 2 build docker image
+      if (hp.includes(repo)) {
+        const certpath = process.env.FORTIATE_HOME + '/.certs/';
+        const certfiles = ['keystore.p12', 'fullchain.pem', 'privkey.pem'];
+
+        shell.mkdir('-p', 'certs');
+        let cp = '';
+
+        certfiles.forEach(cfile => {
+          cp = shell.exec('cp ' + certpath + cfile + ' ' + 'certs/' + cfile);
+          if (cp.code !== 0) {
+            console.log(logSymbols.error, repo + ' failed copying certificate ' + cfile);
+            console.log(cp.stderr);
+          } else console.log(logSymbols.success, repo + cfile + ' certificate copied!');
+        });
+
+      }// if condition of httpprojects
+
+    // step 3 build docker image
     const dockerfilelist = dockerfiles.getlist(repo);
 
     if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
