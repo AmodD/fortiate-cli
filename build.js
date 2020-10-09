@@ -77,10 +77,10 @@ async function builddb(repo, tag, branch, localflag, saveflag, pushflag) {
 
   if (db.listofdatabases.includes(repo)) {
 
-    const fconfig = process.env.FORTIATE_HOME + '/config';
-    const fdbconfigpath = process.env.FORTIATE_HOME + '/config/databases/';
+    const fhome = process.env.FORTIATE_HOME;
+    const fdbconfigpath = process.env.FORTIATE_HOME + '/config/databases/' + repo;
 
-    const cd = shell.cd(fconfig, {silent: true});
+    const cd = shell.cd(fhome, {silent: true});
     if (cd.code !== 0) {
       console.error(cd.stderr);
       console.log(logSymbols.error, repo);
@@ -95,7 +95,7 @@ async function builddb(repo, tag, branch, localflag, saveflag, pushflag) {
       process.exit(1);
       //    } else console.log(logSymbols.success, 'CONFIG code pulled');
     }
-    shell.cd('config', {silent: true});
+    shell.cd(fdbconfigpath, {silent: true});
 
     const dockerfilelist = dockerfiles.getlist(repo);
 
@@ -106,13 +106,6 @@ async function builddb(repo, tag, branch, localflag, saveflag, pushflag) {
           console.log(logSymbols.error, repo);
           process.exit(1);
         } else {
-
-          const cd = shell.cd(fdbconfigpath, {silent: true});
-          if (cd.code !== 0) {
-            console.error(cd.stderr);
-            console.log(logSymbols.error, repo);
-            process.exit(1);
-          }
 
           tag = 'latest';
 
