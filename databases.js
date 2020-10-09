@@ -9,6 +9,7 @@ const listofdatabases = [];
 listofdatabases.push('casesdb');
 listofdatabases.push('compliancedb');
 listofdatabases.push('consumersdb');
+listofdatabases.push('fielddatadb');
 listofdatabases.push('merchantsdb');
 listofdatabases.push('modelsdb');
 listofdatabases.push('rulesdb');
