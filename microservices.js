@@ -16,6 +16,7 @@ listofmicroservices.push('care');
 listofmicroservices.push('cases-dbservice');
 listofmicroservices.push('case-engine');
 listofmicroservices.push('consumers-dbservice');
+listofmicroservices.push('consumer-modeller');
 listofmicroservices.push('cleaner');
 listofmicroservices.push('csv-to-parsed-data');
 listofmicroservices.push('fields-dbservice');
