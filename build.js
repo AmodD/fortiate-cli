@@ -140,37 +140,46 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
 
     const fwspath = process.env.FORTIATE_HOME + '/build/workspaces/';
 
+    // step 0 , pre check if setup has been run
     const cd = shell.cd(fwspath, {silent: true});
     if (cd.code !== 0) {
       console.error(cd.stderr);
       console.log(logSymbols.error, repo);
       process.exit(1);
     }
-    shell.exec('rm -rf ' + repo, {silent: true});
-    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
-    if (gc.code !== 0){
-      console.error(gc.stderr);
-      console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
-      process.exit(1);
-    } else console.log(logSymbols.success, repo + ' code pulled');
 
-    shell.cd(repo, {silent: true});
+    // step 1 , get the code
+    if (localflag){
+      shell.cd(repo, {silent: true});
+      shell.exec('git pull --all', {silent: true});
+      const gc = shell.exec('git checkout ' + branch, {silent: true});
+      if (gc.code !== 0){
+        console.error(gc.stderr);
+        console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
+        process.exit(1);
+      } else console.log(logSymbols.success, repo + ' code pulled');
+    } else {
+      shell.exec('rm -rf ' + repo, {silent: true});
+      const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/' + repo + '.git', {silent: true});
+      if (gc.code !== 0){
+        console.error(gc.stderr);
+        console.log(logSymbols.error, repo + ' branch ' + branch + ' does not exist');
+        process.exit(1);
+      } else console.log(logSymbols.success, repo + ' code pulled');
+      shell.cd(repo, {silent: true});
+    }
 
-    // step 1 build maven jar , if java project
-
+    // step 2 build maven jar , if java project
     if (jp.includes(repo)) {
-
       const mcp = shell.exec('./mvnw clean package', {silent: true});
       if (mcp.code !== 0){
         console.error(mcp.stderr);
         console.log(logSymbols.error, repo);
         process.exit(1);
       } else console.log(logSymbols.success, repo + ' maven jar');
-
     }
 
-    // step 2 , get certificates if https project
-
+    // step 3 , get certificates if https project
     if (hp.includes(repo)) {
       const certpath = process.env.FORTIATE_HOME + '/.certs/';
       const certfiles = ['keystore.p12', 'fullchain.pem', 'privkey.pem'];
@@ -185,12 +194,10 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
           console.log(cp.stderr);
         } else console.log(logSymbols.success, repo + cfile + ' certificate copied!');
       });
+    }
 
-    }// if condition of httpprojects
-
-    // step 3 build docker image
+    // step 4 build docker image
     const dockerfilelist = dockerfiles.getlist(repo);
-
     if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
       dockerfilelist.forEach(async(dockerfile) => {
         if (dockerfile === '') {
