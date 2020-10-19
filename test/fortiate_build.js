@@ -17,30 +17,26 @@ describe('build command', function() {
       // CODE TO PREVENT ASKING FOR SSH KEY PASSPHRASE AGAIN AND AGAIN
       shell.exec('ssh-add', {silent: true});
       // selecting consumers-dbservice randomly
-      shell.exec('git clone git@github.com:fortiate/consumers-dbservice.git', {silent: true});
+      await gitclone(shell, 'git clone git@github.com:fortiate/consumers-dbservice.git');
       // creating a test file to check whether it persists
       shell.cd('consumers-dbservice');
       shell.touch('test.file');
       // fireing fortitae build command
-      const result = await fortiatebuild(shell);
-      console.log(result);
+      await fortiatebuild(shell);
       // now check if our test.file exists
       expect(shell.test('-f', 'test.file')).to.be.true;
-      console.log('^^^^^^^^^^^^^^^^^^');
       // rm -rf test directory
       shell.cd(fbuildpath);
-      console.log('===================');
       shell.rm('-rf', 'workspaces_test');
-      console.log('++++++++++++++++');
       expect(true, 'fortiate build does not delete repo on local').to.be.true;
     } else { expect(true, 'not a local machine').to.be.true; }
-
-
-  });
-
-
+  }).timeout(40000); ;
 });
 
 async function fortiatebuild(shell) {
-  return shell.exec('fortiate build consumers-dbservice', {silent: true});
+  shell.exec('fortiate build consumers-dbservice', {silent: true});
+}
+
+async function gitclone(shell, command) {
+  shell.exec(command, {silent: true});
 }
