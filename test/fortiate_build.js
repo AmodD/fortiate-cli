@@ -30,7 +30,7 @@ describe('build command', function() {
       shell.rm('-rf', 'workspaces_test');
       expect(true, 'fortiate build does not delete repo on local').to.be.true;
     } else { expect(true, 'not a local machine').to.be.true; }
-  }).timeout(40000); ;
+  }).timeout(60000); ;
 });
 
 async function fortiatebuild(shell) {
