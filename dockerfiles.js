@@ -33,8 +33,11 @@ function getlist(microservice){
     commandlist.push('--file myfinity-packer.docker -t myfinity-packer');
   } else if (microservice === 'php-fortiate') commandlist = ['--file php-fortiate.docker -t php-fortiate'];
   else if (microservice === 'python-fortiate') commandlist = ['--file Dockerfile -t python-fortiate'];
-  else if (microservice === 'preprocessor') commandlist = ['--file event.docker -t preprocessor-event', '--file api.docker -t preprocessor-api', '--file ui.docker -t preprocessor-ui'];
-  else if (microservice === 'rules-dbservice') commandlist = ['--file Dockerfile -t rules-dbservice'];
+  else if (microservice === 'preprocessor') {
+    commandlist.push('--file event.docker -t preprocessor-event');
+    commandlist.push('--file api.docker -t preprocessor-api');
+    commandlist.push('--file ui.docker -t preprocessor-ui');
+  } else if (microservice === 'rules-dbservice') commandlist = ['--file Dockerfile -t rules-dbservice'];
   else if (microservice === 'rule-engine') commandlist = ['--file Dockerfile -t rule-engine'];
   else if (microservice === 'rupay-generator') commandlist = ['--file Dockerfile -t rupay-generator'];
   else if (microservice === 'sats') commandlist = ['--file app.docker -t sats', '--file web.docker -t sats-web-server'];
