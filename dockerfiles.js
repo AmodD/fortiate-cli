@@ -46,6 +46,7 @@ function getlist(microservice){
   else if (microservice === 'txn-to-image-encoder') commandlist = ['--file image-encoder.docker -t txn-to-image-encoder'];
   else if (microservice === 'velocity') commandlist = ['--file Dockerfile -t velocity'];
   else if (microservice === 'watcher') commandlist = ['--file watcher.docker -t watcher'];
+  else if (microservice === 'consumer-modeller') commandlist = ['--file Dockerfile -t consumer-modeller'];
   else if (microservice === 'sysusrdb') commandlist = ['--file Dockerfile -t sysusr-seeded'];
   else if (microservice === 'casesdb') commandlist = ['--file Dockerfile -t cases-seeded'];
   else if (microservice === 'consumersdb') commandlist = ['--file Dockerfile -t consumers-seeded'];
