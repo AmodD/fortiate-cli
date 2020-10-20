@@ -87,7 +87,7 @@ async function builddb(repo, tag, branch, localflag, saveflag, pushflag) {
       process.exit(1);
     }
 
-    if(localflag){
+    if (localflag){
       shell.cd(fdbconfigpath, {silent: true});
       shell.exec('git pull --all', {silent: true});
       const gc = shell.exec('git checkout ' + branch, {silent: true});
@@ -97,8 +97,7 @@ async function builddb(repo, tag, branch, localflag, saveflag, pushflag) {
         process.exit(1);
       } else console.log(logSymbols.success, 'CONFIG code pulled');
 
-    }
-    else {
+    } else {
       shell.exec('rm -rf config', {silent: true});
 
       const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/config.git', {silent: true});
