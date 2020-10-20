@@ -13,5 +13,6 @@ httpsprojects.push('login');
 httpsprojects.push('metl');
 httpsprojects.push('sats');
 httpsprojects.push('notifier');
+httpsprojects.push('api-gateway');
 
 module.exports.httpsprojects = httpsprojects;
