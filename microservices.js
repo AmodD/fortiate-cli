@@ -45,6 +45,7 @@ listofmicroservices.push('transactions-dbservice');
 listofmicroservices.push('txn-to-image-encoder');
 listofmicroservices.push('velocity');
 listofmicroservices.push('watcher');
+listofmicroservices.push('api-gateway');
 
 
 module.exports.listofmicroservices = listofmicroservices;

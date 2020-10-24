@@ -86,16 +86,28 @@ async function builddb(repo, tag, branch, localflag, saveflag, pushflag) {
       console.log(logSymbols.error, repo);
       process.exit(1);
     }
-    shell.exec('rm -rf config', {silent: true});
 
-    const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/config.git', {silent: true});
-    if (gc.code !== 0){
-      console.error(gc.stderr);
-      console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
-      process.exit(1);
-      //    } else console.log(logSymbols.success, 'CONFIG code pulled');
+    if (localflag){
+      shell.cd(fdbconfigpath, {silent: true});
+      shell.exec('git pull --all', {silent: true});
+      const gc = shell.exec('git checkout ' + branch, {silent: true});
+      if (gc.code !== 0){
+        console.error(gc.stderr);
+        console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
+        process.exit(1);
+      } else console.log(logSymbols.success, 'CONFIG code pulled');
+
+    } else {
+      shell.exec('rm -rf config', {silent: true});
+
+      const gc = shell.exec('git clone -b ' + branch + ' git@github.com:fortiate/config.git', {silent: true});
+      if (gc.code !== 0){
+        console.error(gc.stderr);
+        console.log(logSymbols.error, 'CONFIG branch ' + branch + ' does not exist');
+        process.exit(1);
+      } else console.log(logSymbols.success, 'CONFIG code pulled');
+      shell.cd(fdbconfigpath, {silent: true});
     }
-    shell.cd(fdbconfigpath, {silent: true});
 
     const dockerfilelist = dockerfiles.getlist(repo);
 
