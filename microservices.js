@@ -46,6 +46,7 @@ listofmicroservices.push('txn-to-image-encoder');
 listofmicroservices.push('velocity');
 listofmicroservices.push('watcher');
 listofmicroservices.push('api-gateway');
+listofmicroservices.push('propensity-dbservice');
 
 
 module.exports.listofmicroservices = listofmicroservices;
