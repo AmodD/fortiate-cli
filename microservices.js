@@ -47,6 +47,7 @@ listofmicroservices.push('velocity');
 listofmicroservices.push('watcher');
 listofmicroservices.push('api-gateway');
 listofmicroservices.push('propensity-dbservice');
+listofmicroservices.push('setup-services');
 
 
 module.exports.listofmicroservices = listofmicroservices;

@@ -63,6 +63,7 @@ function getlist(microservice){
   else if (microservice === 'api-gateway') commandlist = ['--file Dockerfile -t api-gateway'];
   else if (microservice === 'propensitydb') commandlist = ['--file Dockerfile -t propensity-seeded'];
   else if (microservice === 'propensity-dbservice') commandlist = ['--file Dockerfile -t propensity-dbservice'];
+  else if (microservice === 'setup-services') commandlist = ['--file Dockerfile -t setup-services'];
 
   return commandlist;
 
