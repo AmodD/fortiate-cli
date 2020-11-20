@@ -61,6 +61,9 @@ function getlist(microservice){
   else if (microservice === 'transactionsdb') commandlist = ['--file Dockerfile -t transactions-seeded'];
   else if (microservice === 'fielddatadb') commandlist = ['--file Dockerfile -t fielddata-seeded'];
   else if (microservice === 'api-gateway') commandlist = ['--file Dockerfile -t api-gateway'];
+  else if (microservice === 'propensitydb') commandlist = ['--file Dockerfile -t propensity-seeded'];
+  else if (microservice === 'propensity-dbservice') commandlist = ['--file Dockerfile -t propensity-dbservice'];
+  else if (microservice === 'setup-services') commandlist = ['--file app.docker -t ss', '--file web.docker -t ss-web-server'];
 
   return commandlist;
 

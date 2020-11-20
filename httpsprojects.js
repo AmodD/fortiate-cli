@@ -14,5 +14,7 @@ httpsprojects.push('metl');
 httpsprojects.push('sats');
 httpsprojects.push('notifier');
 httpsprojects.push('api-gateway');
+httpsprojects.push('fields-dbservice');
+httpsprojects.push('setup-services');
 
 module.exports.httpsprojects = httpsprojects;

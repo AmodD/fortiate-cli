@@ -16,5 +16,6 @@ javaprojects.push('cases-dbservice');
 javaprojects.push('modelling-dbservice');
 javaprojects.push('transactions-dbservice');
 javaprojects.push('myfinity-generator');
+javaprojects.push('propensity-dbservice');
 
 module.exports.javaprojects = javaprojects;
