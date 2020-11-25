@@ -64,6 +64,7 @@ function getlist(microservice){
   else if (microservice === 'propensitydb') commandlist = ['--file Dockerfile -t propensity-seeded'];
   else if (microservice === 'propensity-dbservice') commandlist = ['--file Dockerfile -t propensity-dbservice'];
   else if (microservice === 'setup-services') commandlist = ['--file app.docker -t ss', '--file web.docker -t ss-web-server'];
+  else if (microservice === 'data-enrichment') commandlist = ['--file Dockerfile -t data-enrichment'];
 
   return commandlist;
 

@@ -17,5 +17,6 @@ javaprojects.push('modelling-dbservice');
 javaprojects.push('transactions-dbservice');
 javaprojects.push('myfinity-generator');
 javaprojects.push('propensity-dbservice');
+javaprojects.push('data-enrichment');
 
 module.exports.javaprojects = javaprojects;

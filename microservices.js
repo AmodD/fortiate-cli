@@ -48,6 +48,7 @@ listofmicroservices.push('watcher');
 listofmicroservices.push('api-gateway');
 listofmicroservices.push('propensity-dbservice');
 listofmicroservices.push('setup-services');
+listofmicroservices.push('data-enrichment');
 
 
 module.exports.listofmicroservices = listofmicroservices;
