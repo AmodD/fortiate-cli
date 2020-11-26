@@ -16,5 +16,6 @@ httpsprojects.push('notifier');
 httpsprojects.push('api-gateway');
 httpsprojects.push('fields-dbservice');
 httpsprojects.push('setup-services');
+httpsprojects.push('preprocessor');
 
 module.exports.httpsprojects = httpsprojects;
