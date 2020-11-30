@@ -1,4 +1,3 @@
-
 'use strict';
 const nodemailer = require('nodemailer');
 
@@ -15,13 +14,13 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-function success(action, data) {
+async function success(action, data) {
   try {
     // send mail with defined transport object
     transporter.sendMail({
       from: '"Fortiate ' + data + '" <contact@fortiate.com>', // sender address
       to: emailids, // list of receivers
-      subject: '✅ ' + action, // Subject line
+      subject: '✅ ' + action + ' <eom>', // Subject line
       html: data,
     });
 
@@ -31,13 +30,13 @@ function success(action, data) {
 
 }
 
-function failure(action, data) {
+async function failure(action, data) {
   try {
     // send mail with defined transport object
     transporter.sendMail({
       from: '"Fortiate ' + data + '" <contact@fortiate.com>', // sender address
       to: emailids, // list of receivers
-      subject: '❌ ' + action, // Subject linie
+      subject: '🔥 ' + action + ' <eom>', // Subject linie
       attachments: [
         { // utf-8 string as an attachment
           filename: 'error.log',
