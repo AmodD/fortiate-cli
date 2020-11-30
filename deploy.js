@@ -1,6 +1,7 @@
 'use strict';
 const logSymbols = require('log-symbols');
 const shell = require('shelljs');
+let email = require('./email');
 
 module.exports = {
   commands: function(program) {
@@ -22,6 +23,8 @@ module.exports = {
         process.exit(1);
       } else {
         if (container !== 'down') console.log(logSymbols.success, deployment + ' deployed');
+        if (container === 'all') email.success('Dev Machine Up');
+        if (container === 'down') email.failure('Dev Machine Down');
 
         process.exit(0);
       }
