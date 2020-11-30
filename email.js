@@ -19,10 +19,10 @@ function success(action, data) {
   try {
     // send mail with defined transport object
     transporter.sendMail({
-      from: '"Fortiate ' + data.deployment + '" <contact@fortiate.com>', // sender address
+      from: '"Fortiate ' + data + '" <contact@fortiate.com>', // sender address
       to: emailids, // list of receivers
       subject: '✅ ' + action, // Subject line
-      html: data.content(),
+      html: data,
     });
 
   } catch (err) {
@@ -35,7 +35,7 @@ function failure(action, data) {
   try {
     // send mail with defined transport object
     transporter.sendMail({
-      from: '"Fortiate ' + data.deployment + '" <contact@fortiate.com>', // sender address
+      from: '"Fortiate ' + data + '" <contact@fortiate.com>', // sender address
       to: emailids, // list of receivers
       subject: '❌ ' + action, // Subject linie
       attachments: [
@@ -43,7 +43,7 @@ function failure(action, data) {
           filename: 'error.log',
           path: process.env.FORTIATE_HOME + '/error.log',
         }],
-      html: data.content(),
+      html: data,
     });
 
   } catch (err) {
