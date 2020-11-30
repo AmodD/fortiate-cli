@@ -26,7 +26,7 @@ module.exports = {
         if (container === 'all') await email.success('Dev Machine Up', '');
         if (container === 'down') await email.failure('Dev Machine Down', '');
 
-        //process.exit(0);
+        // process.exit(0);
       }
 
     });// eoa
