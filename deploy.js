@@ -23,8 +23,8 @@ module.exports = {
         process.exit(1);
       } else {
         if (container !== 'down') console.log(logSymbols.success, deployment + ' deployed');
-        if (container === 'all' && process.env.FORTIATE_ENV !== 'local') await email.success(process.env.FORTIATE_ENV+' machine down', '');
-        if (container === 'down' && process.env.FORTIATE_ENV !== 'local') await email.failure(process.env.FORTIATE_ENV+' machine down', '');
+        if (container === 'all' && process.env.FORTIATE_ENV !== 'local') await email.success(process.env.FORTIATE_ENV + ' machine down', '');
+        if (container === 'down' && process.env.FORTIATE_ENV !== 'local') await email.failure(process.env.FORTIATE_ENV + ' machine down', '');
 
         // process.exit(0);
       }
