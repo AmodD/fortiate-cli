@@ -20,7 +20,7 @@ async function success(action, data) {
     transporter.sendMail({
       from: '"Fortiate ' + data + '" <contact@fortiate.com>', // sender address
       to: emailids, // list of receivers
-      subject: '✅ ' + action + ' <eom>', // Subject line
+      subject: '🏁 ' + action + ' <eom>', // Subject line
       html: data,
     });
 
