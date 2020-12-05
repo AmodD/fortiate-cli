@@ -42,6 +42,7 @@ listofmicroservices.push('tcp-interface');
 listofmicroservices.push('transactions-predictor');
 listofmicroservices.push('transactions-modeller');
 listofmicroservices.push('transactions-dbservice');
+listofmicroservices.push('propensity-modeller');
 listofmicroservices.push('txn-to-image-encoder');
 listofmicroservices.push('velocity');
 listofmicroservices.push('watcher');
