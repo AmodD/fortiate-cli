@@ -151,6 +151,8 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
   if (ms.listofmicroservices.includes(repo)) {
 
     const fwspath = process.env.FORTIATE_HOME + '/build/workspaces/';
+    const fwspathconsolidated = process.env.FORTIATE_HOME + '/build';
+    const deppattern = process.env.FORTIATE_DEPPATTERN;
 
     // step 0 , pre check if setup has been run
     const cd = shell.cd(fwspath, {silent: true});
@@ -208,7 +210,29 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
       });
     }
 
-    // step 4 build docker image
+    // STEP 4
+    if(hp.includes(repo) && deppattern == 'consolidated') {
+    // step 4.1 build consolidated docker image
+    // step 0 , do a cd to come in build path because all consolidated docker files are kept in build parralel to workspaaces
+          const cdc = shell.cd(fwspathconsolidated, {silent: true});
+          if (cdc.code !== 0) {
+            console.error(cdc.stderr);
+            console.log(logSymbols.error, repo);
+            process.exit(1);
+          }
+
+          if (hp.includes(repo)) {
+            docker build --file nginx-web-server.docker -t nginx-web-server:dev .
+            docker build --file php-app-server.docker -t php-app-server:dev .
+            shell.exec('docker build --file nginx-web-server.docker -t nginx-web-server:' + tag + ' .', {silent: true});
+            console.log(logSymbols.success, 'nginx-web-server docker image ');
+            shell.exec('docker build --file php-app-server.docker -t php-app-server:' + tag + ' .', {silent: true});
+            console.log(logSymbols.success, 'php-app-server docker image ');
+
+          }
+    }
+    else {
+    // step 4.2 build individual docker image
     const dockerfilelist = dockerfiles.getlist(repo);
     if (Array.isArray(dockerfilelist) && dockerfilelist.length) {
       dockerfilelist.forEach(async(dockerfile) => {
@@ -238,6 +262,8 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
       // throw new Error("Can't build "+repo);
       process.exit(1);
     }
+
+    }// end of step 4 if condition
 
   }// end of first if condition
 
