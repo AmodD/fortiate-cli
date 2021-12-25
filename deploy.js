@@ -11,9 +11,15 @@ module.exports = {
     .action(async(deployment, container) => {
 
       const fdeploypath = process.env.FORTIATE_HOME + '/deploy';
+      const deployment_pattern = process.env.FORTIATE_DEPPATTERN;
       shell.cd(fdeploypath);
 
-      let cmdmain = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
+      let cmdmain = '';
+
+      if(deployment_pattern)
+        cmdmain = 'docker-compose -f docker-compose.' + deployment + '-' + deployment_pattern + '.yml -p ' + deployment + '-' + deployment_pattern + ' ';
+      else
+        cmdmain = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
 
       const dc = await execdockercompose(cmdmain, container);
 
