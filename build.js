@@ -224,9 +224,9 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
           if (hp.includes(repo)) {
             docker build --file nginx-web-server.docker -t nginx-web-server:dev .
             docker build --file php-app-server.docker -t php-app-server:dev .
-            shell.exec('docker build --file nginx-web-server.docker -t nginx-web-server:' + tag + ' .', {silent: true});
+            const dbftn = shell.exec('docker build --file nginx-web-server.docker -t nginx-web-server:' + tag + ' .', {silent: true});
             console.log(logSymbols.success, 'nginx-web-server docker image ');
-            shell.exec('docker build --file php-app-server.docker -t php-app-server:' + tag + ' .', {silent: true});
+            const dbfta = shell.exec('docker build --file php-app-server.docker -t php-app-server:' + tag + ' .', {silent: true});
             console.log(logSymbols.success, 'php-app-server docker image ');
 
           }
