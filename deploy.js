@@ -16,9 +16,9 @@ module.exports = {
 
       let cmdmain = '';
 
-      if(deployment_pattern)
-        cmdmain = 'docker-compose -f docker-compose.' + deployment + '-' + deployment_pattern + '.yml -p ' + deployment + '-' + deployment_pattern + ' ';
-      else
+//      if(deployment_pattern)
+//        cmdmain = 'docker-compose -f docker-compose.' + deployment + '-' + deployment_pattern + '.yml -p ' + deployment + '-' + deployment_pattern + ' ';
+//      else
         cmdmain = 'docker-compose -f docker-compose.' + deployment + '.yml -p ' + deployment + ' ';
 
       const dc = await execdockercompose(cmdmain, container);
