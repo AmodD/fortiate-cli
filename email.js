@@ -1,7 +1,7 @@
 'use strict';
 const nodemailer = require('nodemailer');
 
-const emailids = ['amit@fortiate.com, amod@fortiate.com, aniket@fortiate.com, gayatri@fortiate.com', 'rutuja@fortiate.com', 'tejas@fortiate.com'];
+const emailids = ['amit@fortiate.com, amod@fortiate.com'];
 // const emailids = ["amod@fortiate.com"];
 
 let transporter = nodemailer.createTransport({
