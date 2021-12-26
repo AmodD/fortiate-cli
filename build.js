@@ -7,6 +7,10 @@ const db = require('./databases');
 const ms = require('./microservices');
 const jp = require('./javaprojects').javaprojects;
 const hp = require('./httpsprojects').httpsprojects;
+const pu = require('./pythonuiprojects').pythonuiprojects;
+const pa = require('./pythonapiprojects').pythonapiprojects;
+const pe = require('./pythoneventprojects').pythoneventprojects;
+
 
 module.exports = {
   commands: function(program) {
@@ -211,7 +215,7 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
     }
 
     // STEP 4
-    if(hp.includes(repo) && deppattern == 'consolidated') {
+    if(deppattern == 'consolidated') {
     // step 4.1 build consolidated docker image
     // step 0 , do a cd to come in build path because all consolidated docker files are kept in build parralel to workspaaces
           const cdc = shell.cd(fwspathconsolidated, {silent: true});
@@ -228,6 +232,31 @@ async function buildws(repo, tag, branch, localflag, saveflag, pushflag) {
             console.log(logSymbols.success, 'php-app-server docker image ');
 
           }
+
+          if (jp.includes(repo)) {
+            const dbftnjp = shell.exec('docker build --file java-dbservices.docker -t java-dbservices:' + tag + ' .', {silent: true});
+            console.log(logSymbols.success, 'java-dbservices docker image ');
+
+          }
+
+          if (pu.includes(repo)) {
+            const dbftnpu = shell.exec('docker build --file python-ui.docker -t python-ui:' + tag + ' .', {silent: true});
+            console.log(logSymbols.success, 'python-ui docker image ');
+
+          }
+
+          if (pa.includes(repo)) {
+            const dbftnpa = shell.exec('docker build --file python-api.docker -t python-api:' + tag + ' .', {silent: true});
+            console.log(logSymbols.success, 'python-api docker image ');
+
+          }
+
+          if (pe.includes(repo)) {
+            const dbftnpe = shell.exec('docker build --file python-event.docker -t python-event:' + tag + ' .', {silent: true});
+            console.log(logSymbols.success, 'python-event docker image ');
+
+          }
+
     }
     else {
     // step 4.2 build individual docker image
